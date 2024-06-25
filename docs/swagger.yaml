@@ -1,0 +1,756 @@
+definitions:
+  files.ChmodReq:
+    properties:
+      mode:
+        description: 十进制
+        type: integer
+      path:
+        type: string
+    required:
+    - mode
+    - path
+    type: object
+  files.CreateReq:
+    properties:
+      isDir:
+        type: boolean
+      mode:
+        description: 十进制
+        type: integer
+      path:
+        type: string
+    required:
+    - isDir
+    - mode
+    - path
+    type: object
+  files.DirSizeReq:
+    properties:
+      path:
+        type: string
+    required:
+    - path
+    type: object
+  files.DirSizeRes:
+    properties:
+      size:
+        type: number
+    type: object
+  files.FileContentReq:
+    properties:
+      path:
+        type: string
+    required:
+    - path
+    type: object
+  files.FileInfo:
+    properties:
+      content:
+        type: string
+      extension:
+        type: string
+      favoriteID:
+        type: integer
+      gid:
+        type: string
+      group:
+        type: string
+      isDir:
+        type: boolean
+      isHidden:
+        type: boolean
+      isSymlink:
+        type: boolean
+      itemTotal:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/files.FileInfo'
+        type: array
+      linkPath:
+        type: string
+      mimeType:
+        type: string
+      modTime:
+        type: string
+      mode:
+        type: string
+      name:
+        type: string
+      path:
+        type: string
+      size:
+        type: integer
+      type:
+        type: string
+      uid:
+        type: string
+      updateTime:
+        type: string
+      user:
+        type: string
+    type: object
+  files.FileOption:
+    properties:
+      containSub:
+        type: boolean
+      dir:
+        type: boolean
+      expand:
+        type: boolean
+      page:
+        type: integer
+      pageSize:
+        type: integer
+      path:
+        type: string
+      search:
+        type: string
+      showHidden:
+        type: boolean
+      sortBy:
+        type: string
+      sortOrder:
+        type: string
+    required:
+    - path
+    type: object
+  files.FileRenameReq:
+    properties:
+      newName:
+        type: string
+      oldName:
+        type: string
+      path:
+        type: string
+    required:
+    - newName
+    - oldName
+    - path
+    type: object
+  files.RemoveReq:
+    properties:
+      isDir:
+        type: boolean
+      path:
+        type: string
+      realDel:
+        type: boolean
+    required:
+    - isDir
+    - path
+    - realDel
+    type: object
+  login_log.SSHHistory:
+    properties:
+      address:
+        type: string
+      area:
+        type: string
+      authMode:
+        type: string
+      date:
+        type: string
+      dateStr:
+        type: string
+      message:
+        type: string
+      port:
+        type: string
+      status:
+        type: string
+      user:
+        type: string
+    type: object
+  login_log.SSHLog:
+    properties:
+      failedCount:
+        type: integer
+      logs:
+        items:
+          $ref: '#/definitions/login_log.SSHHistory'
+        type: array
+      successfulCount:
+        type: integer
+      totalCount:
+        type: integer
+    type: object
+  login_log.SearchSSHLog:
+    properties:
+      Status:
+        enum:
+        - Success
+        - Failed
+        - All
+        type: string
+      info:
+        type: string
+      page:
+        type: integer
+      pageSize:
+        type: integer
+    required:
+    - Status
+    - page
+    - pageSize
+    type: object
+  model.PageInfo:
+    properties:
+      page:
+        type: integer
+      pageSize:
+        type: integer
+    required:
+    - page
+    - pageSize
+    type: object
+  model.RecoverReq:
+    properties:
+      RName:
+        type: string
+      from:
+        type: string
+      name:
+        type: string
+    required:
+    - RName
+    - from
+    - name
+    type: object
+  model.User:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  monitor.DiskIo:
+    properties:
+      ioCount:
+        type: integer
+      ioReadBytes:
+        type: integer
+      ioReadTime:
+        type: integer
+      ioWriteBytes:
+        type: integer
+      ioWriterTime:
+        type: integer
+    type: object
+  monitor.Flow:
+    properties:
+      bytesRecv:
+        type: integer
+      bytesSent:
+        type: integer
+      recv:
+        type: number
+      recvUnit:
+        type: string
+      sent:
+        type: number
+      sentUnit:
+        type: string
+    type: object
+  sysMes.LocalInfo:
+    properties:
+      hostName:
+        type: string
+      kernelV:
+        type: string
+      platform:
+        type: string
+      runTime:
+        type: string
+      startTime:
+        type: string
+      sysType:
+        type: string
+    type: object
+  sysStatic.SysStatus:
+    properties:
+      available:
+        type: number
+      device:
+        type: string
+      free:
+        type: string
+      fstype:
+        type: string
+      inodesFree:
+        type: integer
+      inodesTotal:
+        type: integer
+      inodesUsed:
+        type: integer
+      inodesUsedPercent:
+        type: number
+      load1:
+        type: number
+      load5:
+        type: number
+      load15:
+        type: number
+      loadUsagePercent:
+        type: number
+      model:
+        type: string
+      numCPU:
+        type: integer
+      numLogicCpu:
+        type: integer
+      path:
+        type: string
+      percentage:
+        items:
+          type: number
+        type: array
+      swapFree:
+        type: number
+      swapPercent:
+        type: number
+      swapTotal:
+        type: number
+      swapUsed:
+        type: number
+      total:
+        type: string
+      used:
+        type: string
+      usedPercent:
+        type: number
+    type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+host: https://soulpower.ddnsto.com:443
+info:
+  contact:
+    email: 3130250166@qq.com
+    name: LoveSong.
+    url: 无
+  description: 这是软件杯B1赛题
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/ 使用条款
+  title: 龙芯服务 API
+  version: "1.0"
+paths:
+  /api/user/login:
+    post:
+      consumes:
+      - application/json
+      description: 用户登录
+      parameters:
+      - description: request
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/model.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "422":
+          description: Unprocessable Entity
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: 用户登录
+      tags:
+      - user
+  /api/user/register:
+    post:
+      consumes:
+      - application/json
+      description: 普通用户注册
+      parameters:
+      - description: request
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/model.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "422":
+          description: Unprocessable Entity
+        "500":
+          description: Internal Server Error
+      summary: 普通用户注册
+      tags:
+      - user
+  /files/content:
+    post:
+      consumes:
+      - application/json
+      description: 查看文件属性
+      parameters:
+      - description: request
+        in: body
+        name: content
+        schema:
+          $ref: '#/definitions/files.FileContentReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/files.FileInfo'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: 查看文件属性
+      tags:
+      - file
+  /files/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建文件
+      parameters:
+      - description: request
+        in: body
+        name: req
+        schema:
+          $ref: '#/definitions/files.CreateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: 创建文件
+      tags:
+      - file
+  /files/mode:
+    post:
+      consumes:
+      - application/json
+      description: 修改文件权限
+      parameters:
+      - description: request
+        in: body
+        name: req
+        schema:
+          $ref: '#/definitions/files.ChmodReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: 修改文件权限
+      tags:
+      - file
+  /files/recover:
+    post:
+      consumes:
+      - application/json
+      description: 恢复回收站(单个文件)
+      parameters:
+      - description: request
+        in: body
+        name: req
+        schema:
+          $ref: '#/definitions/model.RecoverReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: 恢复回收站(单个文件)
+      tags:
+      - file
+  /files/recycle/search:
+    post:
+      consumes:
+      - application/json
+      description: 查询回收站(分页)
+      parameters:
+      - description: request
+        in: body
+        name: req
+        schema:
+          $ref: '#/definitions/model.PageInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: 查询回收站(分页)
+      tags:
+      - file
+  /files/remove:
+    post:
+      consumes:
+      - application/json
+      description: 删除文件
+      parameters:
+      - description: request
+        in: body
+        name: req
+        schema:
+          $ref: '#/definitions/files.RemoveReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: 删除文件
+      tags:
+      - file
+  /files/rename:
+    post:
+      consumes:
+      - application/json
+      description: 修改文件名字
+      parameters:
+      - description: request
+        in: body
+        name: req
+        schema:
+          $ref: '#/definitions/files.FileRenameReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: 修改文件名字
+      tags:
+      - file
+  /files/search:
+    post:
+      consumes:
+      - application/json
+      description: 获取该路径的文件
+      parameters:
+      - description: request
+        in: body
+        name: FileOption
+        schema:
+          $ref: '#/definitions/files.FileOption'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/files.FileInfo'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: 获取该路径的文件
+      tags:
+      - file
+  /files/size:
+    post:
+      consumes:
+      - application/json
+      description: 查看文件大小
+      parameters:
+      - description: request
+        in: body
+        name: req
+        schema:
+          $ref: '#/definitions/files.DirSizeReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/files.DirSizeRes'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: 查看文件大小
+      tags:
+      - file
+  /logs/login:
+    post:
+      consumes:
+      - application/json
+      description: 服务器登陆日志
+      parameters:
+      - description: request
+        in: body
+        name: loginLog
+        schema:
+          $ref: '#/definitions/login_log.SearchSSHLog'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/login_log.SSHLog'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: 服务器登陆日志
+      tags:
+      - logs
+  /sys/info:
+    get:
+      consumes:
+      - application/json
+      description: 服务器硬件信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sysMes.LocalInfo'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: 服务器硬件信息
+      tags:
+      - system
+  /sys/io:
+    get:
+      consumes:
+      - application/json
+      description: 获取io监控信息
+      parameters:
+      - description: 该值表示要监控的磁盘名称All表示全部
+        in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/monitor.DiskIo'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: 获取io监控信息
+      tags:
+      - system
+  /sys/net:
+    get:
+      consumes:
+      - application/json
+      description: 获取网络监控信息
+      parameters:
+      - description: 该值表示要监控的网络名称All表示全部
+        in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/monitor.Flow'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: 获取网络监控信息
+      tags:
+      - system
+  /sys/static:
+    get:
+      consumes:
+      - application/json
+      description: 获取服务器状态
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sysStatic.SysStatus'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: 获取服务器状态
+      tags:
+      - system
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"

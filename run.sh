@@ -1,0 +1,1 @@
+go mod tidy && swag init && go build && ./GinProject12
