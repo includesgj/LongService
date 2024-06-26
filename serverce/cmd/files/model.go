@@ -138,3 +138,9 @@ type FileCompress struct {
 	Files   []string `json:"files"  validate:"required"`
 	Replace bool     `json:"replace"`
 }
+
+type FileDecompress struct {
+	Type string `json:"type" validate:"required"`
+	Dst  string `json:"dst" validate:"required"`
+	Path string `json:"path" validate:"required"`
+}

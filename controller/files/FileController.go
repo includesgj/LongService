@@ -285,3 +285,28 @@ func FilesCompress(c *gin.Context) {
 	response.Success(c, nil, "成功")
 
 }
+
+// FilesDecompress 解压文件
+// @Summary      解压文件
+// @Description  解压文件
+// @Tags         file
+// @Accept       json
+// @Produce      json
+// @Param        req body files.FileDecompress ture "request"
+// @Success      200
+// @Failure      400
+// @Failure      404
+// @Failure      500
+// @Router       /files/decompress [POST]
+func FilesDecompress(c *gin.Context) {
+	req := files.FileDecompress{}
+	if err := util.CheckBindAndValidate(&req, c); err != nil {
+		response.Response(c, http.StatusBadRequest, 400, nil, err.Error())
+		return
+	}
+	if err := service.Decompress(req); err != nil {
+		response.Response(c, http.StatusInternalServerError, 500, nil, err.Error())
+		return
+	}
+	response.Success(c, nil, "成功")
+}

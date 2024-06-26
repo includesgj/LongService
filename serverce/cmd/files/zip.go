@@ -7,7 +7,6 @@ import (
 	"github.com/mholt/archiver/v4"
 	"github.com/spf13/afero"
 	"io"
-	"os/exec"
 	"path"
 	"path/filepath"
 	"strings"
@@ -77,14 +76,15 @@ const (
 
 type ZipArchiver struct{}
 
-func ExecCmdWithDir(cmdStr, workDir string) error {
-	cmd := exec.Command("bash", "-c", cmdStr)
-	cmd.Dir = workDir
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		return fmt.Errorf("error : %v, output: %s", err, output)
+func NewZipArchiver() ShellArchiver {
+	return &ZipArchiver{}
+}
+
+func (z ZipArchiver) Extract(filePath, dstDir string) error {
+	if err := checkCmdAvailability("unzip"); err != nil {
+		return err
 	}
-	return nil
+	return ExecCmd(fmt.Sprintf("unzip -qo %s -d %s", filePath, dstDir))
 }
 
 func (z ZipArchiver) Compress(sourcePaths []string, dstFile string) error {
