@@ -130,3 +130,11 @@ type ChmodReq struct {
 	Path string `json:"path" validate:"required"`
 	Mode int    `json:"mode" validate:"required, max=511"` // 十进制
 }
+
+type FileCompress struct {
+	Dst     string   `json:"dst" validate:"required"`
+	Name    string   `json:"name"  validate:"required"`
+	Type    string   `json:"type"  validate:"required"`
+	Files   []string `json:"files"  validate:"required"`
+	Replace bool     `json:"replace"`
+}

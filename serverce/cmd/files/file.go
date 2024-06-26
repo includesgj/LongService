@@ -6,8 +6,11 @@ import (
 	"GinProject12/util"
 	"GinProject12/util/files"
 	"bufio"
+	"context"
 	"errors"
 	"fmt"
+	"github.com/mholt/archiver/v4"
+	_ "github.com/mholt/archiver/v4"
 	"github.com/spf13/afero"
 	_ "github.com/spf13/afero"
 	"net/http"
@@ -558,6 +561,85 @@ func (f *FileService) RecoverInfo(req model.RecoverReq) error {
 		return err
 	}
 
+	return nil
+
+}
+
+func getFormat(cType CompressType) archiver.CompressedArchive {
+	format := archiver.CompressedArchive{}
+	switch cType {
+	case Tar:
+		format.Archival = archiver.Tar{}
+	case TarGz, Gz:
+		format.Compression = archiver.Gz{}
+		format.Archival = archiver.Tar{}
+	case SdkTarGz:
+		format.Compression = archiver.Gz{}
+		format.Archival = archiver.Tar{}
+	case SdkZip, Zip:
+		format.Archival = archiver.Zip{
+			Compression: Deflate,
+		}
+	case Bz2:
+		format.Compression = archiver.Bz2{}
+		format.Archival = archiver.Tar{}
+	case Xz:
+		format.Compression = archiver.Xz{}
+		format.Archival = archiver.Tar{}
+	}
+	return format
+}
+
+// Compress 压缩文件
+func (f *FileService) Compress(s FileCompress) error {
+	fs := afero.NewOsFs()
+
+	_, err := fs.Stat(filepath.Join(s.Dst, s.Name))
+
+	if err != nil && !s.Replace {
+		return err
+	}
+	cType := Zip
+
+	format := getFormat(cType)
+
+	baseNameMap := make(map[string]string, len(s.Files))
+	for _, path := range s.Files {
+		Base := filepath.Base(path)
+		baseNameMap[path] = Base
+	}
+
+	if _, err = fs.Stat(s.Dst); err != nil {
+		_, _ = fs.Create(s.Dst)
+	}
+
+	files, err := archiver.FilesFromDisk(nil, baseNameMap)
+	if err != nil {
+		return err
+	}
+
+	dstPath := filepath.Join(s.Dst, s.Name)
+	out, err := fs.Create(dstPath)
+	if err != nil {
+		return err
+	}
+
+	switch cType {
+	case Zip:
+		if err := ZipFile(files, out); err == nil {
+			return err
+		}
+		_ = fs.Remove(s.Dst)
+		op := ZipArchiver{}
+		op.Compress(s.Files, dstPath)
+		return err
+	default:
+		err = format.Archive(context.Background(), out, files)
+		if err != nil {
+			_ = fs.Remove(s.Dst)
+			return err
+		}
+	}
 	return nil
 
 }

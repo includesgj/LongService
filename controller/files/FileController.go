@@ -258,3 +258,30 @@ func FileChmod(c *gin.Context) {
 
 	response.Success(c, nil, "成功")
 }
+
+// FilesCompress 压缩文件
+// @Summary      压缩文件
+// @Description  压缩文件
+// @Tags         file
+// @Accept       json
+// @Produce      json
+// @Param        req body files.FileCompress ture "request"
+// @Success      200
+// @Failure      400
+// @Failure      404
+// @Failure      500
+// @Router       /files/compress [POST]
+func FilesCompress(c *gin.Context) {
+	req := files.FileCompress{}
+	if err := util.CheckBindAndValidate(&req, c); err != nil {
+		response.Response(c, http.StatusBadRequest, 400, nil, err.Error())
+		return
+	}
+
+	if err := service.Compress(req); err != nil {
+		response.Response(c, http.StatusInternalServerError, 500, nil, err.Error())
+		return
+	}
+	response.Success(c, nil, "成功")
+
+}
