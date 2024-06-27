@@ -227,7 +227,7 @@ func (f *FileService) GetDirSize(req DirSizeReq) (DirSizeRes, error) {
 		}
 	}
 
-	op := files.NewFileOp()
+	op := futil.NewFileOp()
 	size, err := op.GetFileSize(req.Path)
 	if err != nil {
 		return res, err
@@ -281,7 +281,7 @@ func (f *FileService) Remove(req RemoveReq) error {
 
 	deleteTime := time.Now()
 
-	op := files.NewFileOp()
+	op := futil.NewFileOp()
 
 	size, err := op.GetFileSize(req.Path)
 	if err != nil {

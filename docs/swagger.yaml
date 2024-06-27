@@ -36,12 +36,45 @@ definitions:
       size:
         type: number
     type: object
+  files.FileCompress:
+    properties:
+      dst:
+        type: string
+      files:
+        items:
+          type: string
+        type: array
+      name:
+        type: string
+      replace:
+        type: boolean
+      type:
+        type: string
+    required:
+    - dst
+    - files
+    - name
+    - type
+    type: object
   files.FileContentReq:
     properties:
       path:
         type: string
     required:
     - path
+    type: object
+  files.FileDecompress:
+    properties:
+      dst:
+        type: string
+      path:
+        type: string
+      type:
+        type: string
+    required:
+    - dst
+    - path
+    - type
     type: object
   files.FileInfo:
     properties:
@@ -330,7 +363,7 @@ definitions:
 externalDocs:
   description: OpenAPI
   url: https://swagger.io/resources/open-api/
-host: https://soulpower.ddnsto.com:443
+host: 127.0.0.1:8080
 info:
   contact:
     email: 3130250166@qq.com
@@ -398,6 +431,31 @@ paths:
       summary: 普通用户注册
       tags:
       - user
+  /files/compress:
+    post:
+      consumes:
+      - application/json
+      description: 压缩文件
+      parameters:
+      - description: request
+        in: body
+        name: req
+        schema:
+          $ref: '#/definitions/files.FileCompress'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: 压缩文件
+      tags:
+      - File
   /files/content:
     post:
       consumes:
@@ -424,7 +482,7 @@ paths:
           description: Internal Server Error
       summary: 查看文件属性
       tags:
-      - file
+      - File
   /files/create:
     post:
       consumes:
@@ -449,7 +507,43 @@ paths:
           description: Internal Server Error
       summary: 创建文件
       tags:
-      - file
+      - File
+  /files/decompress:
+    post:
+      consumes:
+      - application/json
+      description: 解压文件
+      parameters:
+      - description: request
+        in: body
+        name: req
+        schema:
+          $ref: '#/definitions/files.FileDecompress'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: 解压文件
+      tags:
+      - File
+  /files/download:
+    get:
+      consumes:
+      - application/json
+      description: 下载文件指明路径
+      responses:
+        "200":
+          description: OK
+      summary: 下载文件
+      tags:
+      - File
   /files/mode:
     post:
       consumes:
@@ -474,7 +568,7 @@ paths:
           description: Internal Server Error
       summary: 修改文件权限
       tags:
-      - file
+      - File
   /files/recover:
     post:
       consumes:
@@ -499,7 +593,7 @@ paths:
           description: Internal Server Error
       summary: 恢复回收站(单个文件)
       tags:
-      - file
+      - File
   /files/recycle/search:
     post:
       consumes:
@@ -524,7 +618,7 @@ paths:
           description: Internal Server Error
       summary: 查询回收站(分页)
       tags:
-      - file
+      - File
   /files/remove:
     post:
       consumes:
@@ -549,7 +643,7 @@ paths:
           description: Internal Server Error
       summary: 删除文件
       tags:
-      - file
+      - File
   /files/rename:
     post:
       consumes:
@@ -574,7 +668,7 @@ paths:
           description: Internal Server Error
       summary: 修改文件名字
       tags:
-      - file
+      - File
   /files/search:
     post:
       consumes:
@@ -601,7 +695,7 @@ paths:
           description: Internal Server Error
       summary: 获取该路径的文件
       tags:
-      - file
+      - File
   /files/size:
     post:
       consumes:
@@ -628,7 +722,22 @@ paths:
           description: Internal Server Error
       summary: 查看文件大小
       tags:
-      - file
+      - File
+  /files/upload:
+    post:
+      description: 上传文件指明路径
+      parameters:
+      - description: request
+        in: formData
+        name: file
+        required: true
+        type: file
+      responses:
+        "200":
+          description: OK
+      summary: 上传文件
+      tags:
+      - File
   /logs/login:
     post:
       consumes:

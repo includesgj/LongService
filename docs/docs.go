@@ -108,6 +108,45 @@ const docTemplate = `{
                 }
             }
         },
+        "/files/compress": {
+            "post": {
+                "description": "压缩文件",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "File"
+                ],
+                "summary": "压缩文件",
+                "parameters": [
+                    {
+                        "description": "request",
+                        "name": "req",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/files.FileCompress"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/files/content": {
             "post": {
                 "description": "查看文件属性",
@@ -118,7 +157,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "file"
+                    "File"
                 ],
                 "summary": "查看文件属性",
                 "parameters": [
@@ -160,7 +199,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "file"
+                    "File"
                 ],
                 "summary": "创建文件",
                 "parameters": [
@@ -189,6 +228,62 @@ const docTemplate = `{
                 }
             }
         },
+        "/files/decompress": {
+            "post": {
+                "description": "解压文件",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "File"
+                ],
+                "summary": "解压文件",
+                "parameters": [
+                    {
+                        "description": "request",
+                        "name": "req",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/files.FileDecompress"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/files/download": {
+            "get": {
+                "description": "下载文件指明路径",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "File"
+                ],
+                "summary": "下载文件",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/files/mode": {
             "post": {
                 "description": "修改文件权限",
@@ -199,7 +294,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "file"
+                    "File"
                 ],
                 "summary": "修改文件权限",
                 "parameters": [
@@ -238,7 +333,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "file"
+                    "File"
                 ],
                 "summary": "恢复回收站(单个文件)",
                 "parameters": [
@@ -277,7 +372,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "file"
+                    "File"
                 ],
                 "summary": "查询回收站(分页)",
                 "parameters": [
@@ -316,7 +411,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "file"
+                    "File"
                 ],
                 "summary": "删除文件",
                 "parameters": [
@@ -355,7 +450,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "file"
+                    "File"
                 ],
                 "summary": "修改文件名字",
                 "parameters": [
@@ -394,7 +489,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "file"
+                    "File"
                 ],
                 "summary": "获取该路径的文件",
                 "parameters": [
@@ -436,7 +531,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "file"
+                    "File"
                 ],
                 "summary": "查看文件大小",
                 "parameters": [
@@ -464,6 +559,29 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/files/upload": {
+            "post": {
+                "description": "上传文件指明路径",
+                "tags": [
+                    "File"
+                ],
+                "summary": "上传文件",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "request",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     }
                 }
             }
@@ -711,6 +829,35 @@ const docTemplate = `{
                 }
             }
         },
+        "files.FileCompress": {
+            "type": "object",
+            "required": [
+                "dst",
+                "files",
+                "name",
+                "type"
+            ],
+            "properties": {
+                "dst": {
+                    "type": "string"
+                },
+                "files": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "replace": {
+                    "type": "boolean"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
         "files.FileContentReq": {
             "type": "object",
             "required": [
@@ -718,6 +865,25 @@ const docTemplate = `{
             ],
             "properties": {
                 "path": {
+                    "type": "string"
+                }
+            }
+        },
+        "files.FileDecompress": {
+            "type": "object",
+            "required": [
+                "dst",
+                "path",
+                "type"
+            ],
+            "properties": {
+                "dst": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "type": {
                     "type": "string"
                 }
             }
@@ -1164,7 +1330,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "https://soulpower.ddnsto.com:443",
+	Host:             "127.0.0.1:8080",
 	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "龙芯服务 API",

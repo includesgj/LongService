@@ -17,6 +17,7 @@ require (
 
 require (
 	github.com/golang/snappy v0.0.4
+	github.com/klauspost/compress v1.15.9
 	github.com/mholt/archiver/v4 v4.0.0-alpha.8
 	github.com/swaggo/files v1.0.1
 	github.com/swaggo/gin-swagger v1.6.0
@@ -52,7 +53,6 @@ require (
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/klauspost/compress v1.15.9 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.7 // indirect
 	github.com/klauspost/pgzip v1.2.5 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect

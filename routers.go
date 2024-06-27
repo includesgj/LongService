@@ -54,6 +54,8 @@ func CollectRoute(r *gin.Engine) *gin.Engine {
 		fileGroup.POST("/mode", filetro.FileChmod)
 		fileGroup.POST("/compress", filetro.FilesCompress)
 		fileGroup.POST("/decompress", filetro.FilesDecompress)
+		fileGroup.GET("/download", filetro.Download)
+		fileGroup.POST("/upload", filetro.UploadFiles)
 	}
 
 	return r

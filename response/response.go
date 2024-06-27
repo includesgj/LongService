@@ -5,15 +5,15 @@ import (
 	"net/http"
 )
 
-func Response(c *gin.Context, httpStatic int, code int, data gin.H, msg string) {
+func Response(c *gin.Context, httpStatic int, code int, data gin.H, msg any) {
 	c.JSON(httpStatic, gin.H{"code": code, "data": data, "mes": msg})
 	c.Abort()
 }
 
-func Success(c *gin.Context, data gin.H, msg string) {
+func Success(c *gin.Context, data gin.H, msg any) {
 	Response(c, http.StatusOK, 200, data, msg)
 }
 
-func Fail(c *gin.Context, data gin.H, msg string) {
+func Fail(c *gin.Context, data gin.H, msg any) {
 	Response(c, http.StatusBadRequest, 400, data, msg)
 }
