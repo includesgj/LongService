@@ -174,7 +174,7 @@ definitions:
     - path
     - realDel
     type: object
-  login_log.SSHHistory:
+  login_log_server.SSHHistory:
     properties:
       address:
         type: string
@@ -195,20 +195,20 @@ definitions:
       user:
         type: string
     type: object
-  login_log.SSHLog:
+  login_log_server.SSHLog:
     properties:
       failedCount:
         type: integer
       logs:
         items:
-          $ref: '#/definitions/login_log.SSHHistory'
+          $ref: '#/definitions/login_log_server.SSHHistory'
         type: array
       successfulCount:
         type: integer
       totalCount:
         type: integer
     type: object
-  login_log.SearchSSHLog:
+  login_log_server.SearchSSHLog:
     properties:
       Status:
         enum:
@@ -227,6 +227,20 @@ definitions:
     - page
     - pageSize
     type: object
+  model.LoginLog:
+    properties:
+      area:
+        type: string
+      id:
+        type: integer
+      ip:
+        type: string
+      isLogin:
+        description: 是否登陆成功
+        type: boolean
+      loginTime:
+        type: string
+    type: object
   model.PageInfo:
     properties:
       page:
@@ -239,16 +253,16 @@ definitions:
     type: object
   model.RecoverReq:
     properties:
-      RName:
-        type: string
       from:
         type: string
       name:
         type: string
+      rName:
+        type: string
     required:
-    - RName
     - from
     - name
+    - rName
     type: object
   model.User:
     properties:
@@ -377,6 +391,25 @@ info:
   title: 龙芯服务 API
   version: "1.0"
 paths:
+  /api/user/info:
+    get:
+      consumes:
+      - application/json
+      description: 用户信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "422":
+          description: Unprocessable Entity
+        "500":
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: 用户信息
+      tags:
+      - user
   /api/user/login:
     post:
       consumes:
@@ -725,7 +758,7 @@ paths:
       - File
   /files/upload:
     post:
-      description: 上传文件指明路径
+      description: 上传文件指明路径 file 上传的文件 path存放的路径 cover 是否覆盖 用 postman的 body form-data
       parameters:
       - description: request
         in: formData
@@ -742,27 +775,27 @@ paths:
     post:
       consumes:
       - application/json
-      description: 服务器登陆日志
+      description: 面板登陆日志
       parameters:
       - description: request
         in: body
-        name: loginLog
+        name: page
         schema:
-          $ref: '#/definitions/login_log.SearchSSHLog'
+          $ref: '#/definitions/model.PageInfo'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/login_log.SSHLog'
+            $ref: '#/definitions/model.LoginLog'
         "400":
           description: Bad Request
         "404":
           description: Not Found
         "500":
           description: Internal Server Error
-      summary: 服务器登陆日志
+      summary: 面板登陆日志
       tags:
       - logs
   /sys/info:

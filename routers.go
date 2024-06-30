@@ -39,6 +39,7 @@ func CollectRoute(r *gin.Engine) *gin.Engine {
 	logGroup := r.Group("/logs")
 	{
 		logGroup.POST("/login", logs.LoginLog)
+		logGroup.POST("/panel", logs.PanelLogin)
 	}
 
 	fileGroup := r.Group("/files")

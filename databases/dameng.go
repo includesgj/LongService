@@ -223,7 +223,7 @@ func InsertRecycleBinInfo(info model.RecycleBin) (int64, error) {
 	return id, nil
 }
 
-func RecycleBinPage(page model.PageInfo) ([]*model.RecycleBin, error) { // ORDER BY your_column OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+func RecycleBinPage(page model.PageInfo) ([]model.RecycleBin, error) { // ORDER BY your_column OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
 	sql := fmt.Sprintf(`SELECT "id", "deleteTime", "name", "rName", "sourcePath", "from", "size", "isDir" FROM "gorjb"."RecycleBin" ORDER BY 'deleteTime' OFFSET %d ROWS FETCH NEXT %d ROWS ONLY`, page.Page-1, page.PageSize)
 
 	exec, err := DB.Query(sql)
@@ -237,7 +237,7 @@ func RecycleBinPage(page model.PageInfo) ([]*model.RecycleBin, error) { // ORDER
 		return nil, err
 	}
 
-	var list []*model.RecycleBin
+	var list []model.RecycleBin
 
 	for exec.Next() {
 		var info model.RecycleBin
@@ -247,7 +247,7 @@ func RecycleBinPage(page model.PageInfo) ([]*model.RecycleBin, error) { // ORDER
 			log.Println(err.Error())
 			return nil, err
 		}
-		list = append(list, &info)
+		list = append(list, info)
 
 	}
 
@@ -270,4 +270,63 @@ func RecycleBinInfo(req model.RecoverReq) (*model.RecycleBin, error) {
 
 	return &info, nil
 
+}
+
+func DelRecycleBin(id int) error {
+	sql := fmt.Sprintf(`DELETE FROM "gorjb"."RecycleBin" WHERE "id" = '%d'`, id)
+	_, err := DB.Exec(sql)
+	if err != nil {
+		return err
+	}
+	log.Println("删除成功")
+	return nil
+}
+
+func InsertLoginLog(info model.LoginLog) error {
+	var is = 0
+	if info.IsLogin {
+		is = 1
+	}
+	sql := fmt.Sprintf(`INSERT INTO "gorjb"."LoginLog" ("ip", "area", "loginTime", "isLogin") values('%s', '%s', '%s', '%d')`, info.Ip, info.Area, info.LoginTime, is)
+	exec, err := DB.Exec(sql)
+	if err != nil {
+		return err
+	}
+	id, err := exec.LastInsertId()
+
+	if err != nil {
+		return err
+	}
+
+	log.Printf("插入成功id=%d\n", id)
+	return nil
+}
+
+func LoginLogPage(page model.PageInfo) ([]model.LoginLog, error) {
+	sql := fmt.Sprintf(`SELECT "id", "ip", "area", "loginTime", "isLogin" form "gorjb"."LoginLog" ORDER BY 'deleteTime' OFFSET %d ROWS FETCH NEXT %d ROWS ONLY`, page.Page-1, page.PageSize)
+	exec, err := DB.Query(sql)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	if exec.Err() != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	var list []model.LoginLog
+
+	for exec.Next() {
+		var info model.LoginLog
+		err = exec.Scan(&info.Id, &info.Ip, &info.Area, &info.LoginTime, &info.IsLogin)
+		if err != nil {
+			log.Println(err.Error())
+			return nil, err
+		}
+		list = append(list, info)
+
+	}
+
+	return list, nil
 }

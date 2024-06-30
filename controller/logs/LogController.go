@@ -1,10 +1,11 @@
 package logs
 
 import (
+	sdb "GinProject12/databases"
+	"GinProject12/model"
 	"GinProject12/response"
-	login_log "GinProject12/serverce/cmd/logs/login-log"
+	login_log "GinProject12/serverce/cmd/logs/login-log-server"
 	"GinProject12/util"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -33,11 +34,39 @@ func LoginLog(c *gin.Context) {
 	log, err := service.LoadLog(req)
 
 	if err != nil {
-		fmt.Println(err)
 		response.Response(c, http.StatusInternalServerError, 500, nil, "服务器内部问题")
 		return
 	}
 
 	response.Success(c, gin.H{"data": log}, "成功!")
+
+}
+
+// PanelLogin 面板登陆日志
+// @Summary      面板登陆日志
+// @Description  面板登陆日志
+// @Tags         logs
+// @Accept       json
+// @Produce      json
+// @Param        page body model.PageInfo ture "request"
+// @Success      200  {object} model.LoginLog
+// @Failure      400
+// @Failure      404
+// @Failure      500
+// @Router       /logs/login [POST]
+func PanelLogin(c *gin.Context) {
+	var req model.PageInfo
+	if err := util.CheckBindAndValidate(&req, c); err != nil {
+		return
+	}
+
+	page, err := sdb.LoginLogPage(req)
+
+	if err != nil {
+		response.Response(c, http.StatusInternalServerError, 500, nil, "服务器内部问题")
+		return
+	}
+
+	response.Success(c, gin.H{"data": page}, "成功!")
 
 }

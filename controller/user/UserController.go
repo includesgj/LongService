@@ -6,7 +6,9 @@ import (
 	"GinProject12/dto"
 	"GinProject12/model"
 	"GinProject12/response"
+	login_log "GinProject12/serverce/cmd/logs/login-log-panel"
 	"GinProject12/util"
+	"errors"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -93,11 +95,13 @@ func BaseUserLogin(c *gin.Context) {
 	user := sdb.FindUserByEvery("username", req.Username)
 
 	if user == nil || user.ID == 0 {
+		go login_log.SaveLoginLog(c, errors.New("用户不存在"))
 		response.Response(c, http.StatusUnprocessableEntity, 422, nil, "用户不存在")
 		return
 	}
 
 	if !util.ComparePasswords(user.Password, req.Password) {
+		go login_log.SaveLoginLog(c, errors.New("密码错误"))
 		response.Fail(c, nil, "密码错误")
 		return
 	}
@@ -109,10 +113,21 @@ func BaseUserLogin(c *gin.Context) {
 		return
 	}
 	// 返回结果
-
+	go login_log.SaveLoginLog(c, nil)
 	response.Success(c, gin.H{"token": token}, "登陆成功")
 }
 
+// BaseUserInfo 用户信息
+// @Summary      用户信息
+// @Description  用户信息
+// @Tags         user
+// @Accept       json
+// @Produce      json
+// @Security ApiKeyAuth
+// @Success      200
+// @Failure      422
+// @Failure      500
+// @Router       /api/user/info [GET]
 func BaseUserInfo(c *gin.Context) {
 	user, _ := c.Get("user")
 	log.Println(user)

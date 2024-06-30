@@ -15,7 +15,7 @@ func checkCmdAvailability(cmdStr string) error {
 	if Which(cmdStr) {
 		return nil
 	}
-	return errors.New("该命令为找到" + cmdStr)
+	return errors.New("该命令未找到" + cmdStr)
 }
 
 func ExecCmdWithDir(cmdStr, workDir string) error {

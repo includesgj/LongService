@@ -25,6 +25,37 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/user/info": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "用户信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "用户信息",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/api/user/login": {
             "post": {
                 "description": "用户登录",
@@ -565,7 +596,7 @@ const docTemplate = `{
         },
         "/files/upload": {
             "post": {
-                "description": "上传文件指明路径",
+                "description": "上传文件指明路径 file 上传的文件 path存放的路径 cover 是否覆盖 用 postman的 body form-data",
                 "tags": [
                     "File"
                 ],
@@ -588,7 +619,7 @@ const docTemplate = `{
         },
         "/logs/login": {
             "post": {
-                "description": "服务器登陆日志",
+                "description": "面板登陆日志",
                 "consumes": [
                     "application/json"
                 ],
@@ -598,14 +629,14 @@ const docTemplate = `{
                 "tags": [
                     "logs"
                 ],
-                "summary": "服务器登陆日志",
+                "summary": "面板登陆日志",
                 "parameters": [
                     {
                         "description": "request",
-                        "name": "loginLog",
+                        "name": "page",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/login_log.SearchSSHLog"
+                            "$ref": "#/definitions/model.PageInfo"
                         }
                     }
                 ],
@@ -613,7 +644,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/login_log.SSHLog"
+                            "$ref": "#/definitions/model.LoginLog"
                         }
                     },
                     "400": {
@@ -1035,7 +1066,7 @@ const docTemplate = `{
                 }
             }
         },
-        "login_log.SSHHistory": {
+        "login_log_server.SSHHistory": {
             "type": "object",
             "properties": {
                 "address": {
@@ -1067,7 +1098,7 @@ const docTemplate = `{
                 }
             }
         },
-        "login_log.SSHLog": {
+        "login_log_server.SSHLog": {
             "type": "object",
             "properties": {
                 "failedCount": {
@@ -1076,7 +1107,7 @@ const docTemplate = `{
                 "logs": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/login_log.SSHHistory"
+                        "$ref": "#/definitions/login_log_server.SSHHistory"
                     }
                 },
                 "successfulCount": {
@@ -1087,7 +1118,7 @@ const docTemplate = `{
                 }
             }
         },
-        "login_log.SearchSSHLog": {
+        "login_log_server.SearchSSHLog": {
             "type": "object",
             "required": [
                 "Status",
@@ -1114,6 +1145,27 @@ const docTemplate = `{
                 }
             }
         },
+        "model.LoginLog": {
+            "type": "object",
+            "properties": {
+                "area": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "ip": {
+                    "type": "string"
+                },
+                "isLogin": {
+                    "description": "是否登陆成功",
+                    "type": "boolean"
+                },
+                "loginTime": {
+                    "type": "string"
+                }
+            }
+        },
         "model.PageInfo": {
             "type": "object",
             "required": [
@@ -1132,18 +1184,18 @@ const docTemplate = `{
         "model.RecoverReq": {
             "type": "object",
             "required": [
-                "RName",
                 "from",
-                "name"
+                "name",
+                "rName"
             ],
             "properties": {
-                "RName": {
-                    "type": "string"
-                },
                 "from": {
                     "type": "string"
                 },
                 "name": {
+                    "type": "string"
+                },
+                "rName": {
                     "type": "string"
                 }
             }

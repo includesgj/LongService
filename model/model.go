@@ -35,6 +35,14 @@ type RecycleBin struct {
 // RecoverReq 恢复回收站
 type RecoverReq struct {
 	Name  string `json:"name"  validate:"required"`
-	RName string `json:"RName"  validate:"required"`
+	RName string `json:"rName"  validate:"required"`
 	From  string `json:"from"  validate:"required"`
+}
+
+type LoginLog struct {
+	Id        int    `json:"id"`
+	Ip        string `json:"ip"`
+	LoginTime string `json:"loginTime"`
+	Area      string `json:"area"`
+	IsLogin   bool   `json:"isLogin"` // 是否登陆成功
 }

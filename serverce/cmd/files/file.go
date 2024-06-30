@@ -337,7 +337,7 @@ func (f *FileService) Chmod(req ChmodReq) error {
 }
 
 // GetRecycleBin 获取回收站的所有数据(按分页)
-func (f *FileService) GetRecycleBin(info model.PageInfo) ([]*model.RecycleBin, error) {
+func (f *FileService) GetRecycleBin(info model.PageInfo) ([]model.RecycleBin, error) {
 	total, err := sdb.RecycleBinPage(info)
 	if err != nil {
 		return nil, err
@@ -348,13 +348,19 @@ func (f *FileService) GetRecycleBin(info model.PageInfo) ([]*model.RecycleBin, e
 
 // RecoverInfo 恢复回收站
 func (f *FileService) RecoverInfo(req model.RecoverReq) error {
-	// 查询数据库查找到指定的然后恢复
+	// 查询数据库查找到指定的然后恢复然后删除这一条
 	info, err := sdb.RecycleBinInfo(req)
 	if err != nil {
 		return err
 	}
 
 	if err = os.Rename(path.Join(info.From, info.RName), info.SourcePath); err != nil {
+		return err
+	}
+
+	err = sdb.DelRecycleBin(info.Id)
+
+	if err != nil {
 		return err
 	}
 
