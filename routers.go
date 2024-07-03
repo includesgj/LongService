@@ -1,6 +1,7 @@
 package main
 
 import (
+	"GinProject12/controller/email"
 	"GinProject12/controller/files"
 	"GinProject12/controller/logs"
 	systemtro "GinProject12/controller/system"
@@ -14,6 +15,9 @@ import (
 
 func CollectRoute(r *gin.Engine) *gin.Engine {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	r.Use(middleware.Cors())
+
 	userGroup := r.Group("/api/user")
 	{
 		userGroup.POST("/register", user.BaseUserRegister)
@@ -57,6 +61,12 @@ func CollectRoute(r *gin.Engine) *gin.Engine {
 		fileGroup.POST("/decompress", filetro.FilesDecompress)
 		fileGroup.GET("/download", filetro.Download)
 		fileGroup.POST("/upload", filetro.UploadFiles)
+	}
+
+	emailGroup := r.Group("/email")
+	{
+		emailGroup.GET("/code", email.SendEmailCode)
+		emailGroup.GET("/verify", email.VerifyCode)
 	}
 
 	return r

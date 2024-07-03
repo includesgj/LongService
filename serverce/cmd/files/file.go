@@ -184,7 +184,7 @@ func (f *FileInfo) getContent() error {
 	if IsBlockDevice(f.FileMode) {
 		return errors.New(ErrFileCanNotRead)
 	}
-	if f.Size > 10*1024*1024 {
+	if f.Size > 1024*1024*10 {
 		return errors.New("ErrFileToLarge")
 	}
 	afs := &afero.Afero{Fs: f.Fs}

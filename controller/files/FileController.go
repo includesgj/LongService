@@ -54,9 +54,9 @@ func FileDetail(c *gin.Context) {
 
 }
 
-// GetFileContent 查看文件属性
-// @Summary      查看文件属性
-// @Description  查看文件属性
+// GetFileContent 查看文件属性和查看文件内容
+// @Summary      查看文件属性和查看文件内容
+// @Description  查看文件属性和查看文件内容
 // @Tags         File
 // @Accept       json
 // @Produce      json
@@ -326,6 +326,7 @@ func FilesDecompress(c *gin.Context) {
 // @Summary      下载文件
 // @Description  下载文件指明路径
 // @Accept json
+// @Param  		 path query string ture "path"
 // @Success 200
 // @Router /files/download [get]
 // @Router       /files/download [GET]

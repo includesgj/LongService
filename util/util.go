@@ -11,6 +11,7 @@ import (
 	"os"
 	"regexp"
 	"strconv"
+	"time"
 )
 
 var (
@@ -106,4 +107,9 @@ func RandStr(n int) string {
 		b[i] = letters[rand.Intn(len(letters))]
 	}
 	return string(b)
+}
+
+func RandCodeSix() string {
+	rand.Seed(time.Now().UnixNano())
+	return strconv.Itoa(100000 + rand.Intn(900000))
 }

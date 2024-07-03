@@ -139,6 +139,83 @@ const docTemplate = `{
                 }
             }
         },
+        "/email/code": {
+            "get": {
+                "description": "向邮箱发送验证码(用query发数据\"email\")",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "email"
+                ],
+                "summary": "向邮箱发送验证码",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "email",
+                        "name": "email",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/email/verify": {
+            "get": {
+                "description": "验证验证码(用query发送\"email\", \"code\")201代表验证失败",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "email"
+                ],
+                "summary": "验证验证码",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "email",
+                        "name": "email",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "code",
+                        "name": "code",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/files/compress": {
             "post": {
                 "description": "压缩文件",
@@ -180,7 +257,7 @@ const docTemplate = `{
         },
         "/files/content": {
             "post": {
-                "description": "查看文件属性",
+                "description": "查看文件属性和查看文件内容",
                 "consumes": [
                     "application/json"
                 ],
@@ -190,7 +267,7 @@ const docTemplate = `{
                 "tags": [
                     "File"
                 ],
-                "summary": "查看文件属性",
+                "summary": "查看文件属性和查看文件内容",
                 "parameters": [
                     {
                         "description": "request",
@@ -308,6 +385,14 @@ const docTemplate = `{
                     "File"
                 ],
                 "summary": "下载文件",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "path",
+                        "name": "path",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK"

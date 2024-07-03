@@ -5,27 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9b1174b4-61f4-479e-a4c5-cab829538dc7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/GinProject12" beforeDir="false" afterPath="$PROJECT_DIR$/GinProject12" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/arm64" beforeDir="false" afterPath="$PROJECT_DIR$/arm64" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/logs/LogController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/logs/LogController.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/user/UserController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/user/UserController.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/databases/dameng.go" beforeDir="false" afterPath="$PROJECT_DIR$/databases/dameng.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/files/FileController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/files/FileController.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/docs.go" beforeDir="false" afterPath="$PROJECT_DIR$/docs/docs.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/swagger.json" beforeDir="false" afterPath="$PROJECT_DIR$/docs/swagger.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/swagger.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/swagger.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/model/model.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/run.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routers.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/serverce/cmd/files/cmd.go" beforeDir="false" afterPath="$PROJECT_DIR$/serverce/cmd/files/cmd.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/serverce/cmd/files/file.go" beforeDir="false" afterPath="$PROJECT_DIR$/serverce/cmd/files/file.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverce/cmd/logs/login-log/loginLog.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverce/cmd/logs/login-log/model.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverce/cmd/logs/login-log/resource/qqwey.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverce/cmd/logs/login-log/resource/qqwry.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/util.go" beforeDir="false" afterPath="$PROJECT_DIR$/util/util.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
   </component>
   <component name="GOROOT" url="file:///usr/local/go" />
   <component name="Git.Settings">
@@ -41,6 +42,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "DefaultGoTemplateProperty": "Go File",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.go.format.on.save.advertiser.fired": "true",
@@ -55,7 +57,8 @@
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)"
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm"
   }
 }]]></component>
   <component name="RecentsManager">

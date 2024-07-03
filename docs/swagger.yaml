@@ -464,6 +464,56 @@ paths:
       summary: 普通用户注册
       tags:
       - user
+  /email/code:
+    get:
+      consumes:
+      - application/json
+      description: 向邮箱发送验证码(用query发数据"email")
+      parameters:
+      - description: email
+        in: query
+        name: email
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: 向邮箱发送验证码
+      tags:
+      - email
+  /email/verify:
+    get:
+      consumes:
+      - application/json
+      description: 验证验证码(用query发送"email", "code")201代表验证失败
+      parameters:
+      - description: email
+        in: query
+        name: email
+        type: string
+      - description: code
+        in: query
+        name: code
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "201":
+          description: Created
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: 验证验证码
+      tags:
+      - email
   /files/compress:
     post:
       consumes:
@@ -493,7 +543,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: 查看文件属性
+      description: 查看文件属性和查看文件内容
       parameters:
       - description: request
         in: body
@@ -513,7 +563,7 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
-      summary: 查看文件属性
+      summary: 查看文件属性和查看文件内容
       tags:
       - File
   /files/create:
@@ -571,6 +621,11 @@ paths:
       consumes:
       - application/json
       description: 下载文件指明路径
+      parameters:
+      - description: path
+        in: query
+        name: path
+        type: string
       responses:
         "200":
           description: OK
