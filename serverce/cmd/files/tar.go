@@ -1,6 +1,7 @@
 package files
 
 import (
+	"GinProject12/util/cmd"
 	"fmt"
 )
 
@@ -22,7 +23,7 @@ func NewTarArchiver(compressType CompressType) ShellArchiver {
 }
 
 func (t TarArchiver) Extract(FilePath string, dstDir string) error {
-	return ExecCmd(fmt.Sprintf("%s %s %s -C %s", t.Cmd, t.getOptionStr("extract"), FilePath, dstDir))
+	return cmd.ExecCmd(fmt.Sprintf("%s %s %s -C %s", t.Cmd, t.getOptionStr("extract"), FilePath, dstDir))
 }
 
 func (t TarArchiver) Compress(sourcePaths []string, dstFile string) error {

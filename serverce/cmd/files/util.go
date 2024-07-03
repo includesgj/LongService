@@ -2,6 +2,7 @@ package files
 
 import (
 	"GinProject12/util"
+	"GinProject12/util/cmd"
 	"context"
 	"errors"
 	"fmt"
@@ -25,12 +26,12 @@ import (
 func NewShellArchiver(compressType CompressType) (ShellArchiver, error) {
 	switch compressType {
 	case Tar:
-		if err := checkCmdAvailability("tar"); err != nil {
+		if err := cmd.CheckCmdAvailability("tar"); err != nil {
 			return nil, err
 		}
 		return NewTarArchiver(compressType), nil
 	case Zip:
-		if err := checkCmdAvailability("zip"); err != nil {
+		if err := cmd.CheckCmdAvailability("zip"); err != nil {
 			return nil, err
 		}
 		return NewZipArchiver(), nil

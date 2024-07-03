@@ -2,6 +2,7 @@ package files
 
 import (
 	"GinProject12/util"
+	"GinProject12/util/cmd"
 	"archive/zip"
 	"fmt"
 	"github.com/mholt/archiver/v4"
@@ -81,10 +82,10 @@ func NewZipArchiver() ShellArchiver {
 }
 
 func (z ZipArchiver) Extract(filePath, dstDir string) error {
-	if err := checkCmdAvailability("unzip"); err != nil {
+	if err := cmd.CheckCmdAvailability("unzip"); err != nil {
 		return err
 	}
-	return ExecCmd(fmt.Sprintf("unzip -qo %s -d %s", filePath, dstDir))
+	return cmd.ExecCmd(fmt.Sprintf("unzip -qo %s -d %s", filePath, dstDir))
 }
 
 func (z ZipArchiver) Compress(sourcePaths []string, dstFile string) error {
@@ -103,7 +104,7 @@ func (z ZipArchiver) Compress(sourcePaths []string, dstFile string) error {
 		relativePaths[i] = path.Base(sp)
 	}
 	cmdStr := fmt.Sprintf("zip -qr %s  %s", tmpFile, strings.Join(relativePaths, " "))
-	if err = ExecCmdWithDir(cmdStr, baseDir); err != nil {
+	if err = cmd.ExecCmdWithDir(cmdStr, baseDir); err != nil {
 		return err
 	}
 	if err = op.Rename(tmpFile, dstFile); err != nil {

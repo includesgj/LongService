@@ -4,6 +4,7 @@ import (
 	"GinProject12/controller/email"
 	"GinProject12/controller/files"
 	"GinProject12/controller/logs"
+	"GinProject12/controller/ssh"
 	systemtro "GinProject12/controller/system"
 	"GinProject12/controller/user"
 	_ "GinProject12/docs"
@@ -67,6 +68,11 @@ func CollectRoute(r *gin.Engine) *gin.Engine {
 	{
 		emailGroup.GET("/code", email.SendEmailCode)
 		emailGroup.GET("/verify", email.VerifyCode)
+	}
+
+	sshGroup := r.Group("/ssh")
+	{
+		sshGroup.GET("/operate", sshtro.SshService)
 	}
 
 	return r

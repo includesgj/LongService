@@ -377,7 +377,7 @@ definitions:
 externalDocs:
   description: OpenAPI
   url: https://swagger.io/resources/open-api/
-host: 127.0.0.1:8080
+host: 39.99.139.249:8080
 info:
   contact:
     email: 3130250166@qq.com

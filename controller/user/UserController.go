@@ -54,6 +54,7 @@ func BaseUserRegister(c *gin.Context) {
 	query := sdb.FindUserByEvery("username", req.Username)
 	if query != nil {
 		response.Response(c, http.StatusUnprocessableEntity, 422, nil, "该用户已存在")
+		return
 	}
 
 	hashPassword, err := util.HashAndSalt(req.Password)
