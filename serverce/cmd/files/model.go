@@ -121,9 +121,12 @@ type RemoveReq struct {
 }
 
 type CreateReq struct {
-	Path  string `json:"path" validate:"required"`
-	Mode  int    `json:"mode" validate:"required, max=511"` // 十进制
-	IsDir bool   `json:"isDir" validate:"required"`
+	Path      string `json:"path" validate:"required"`
+	Mode      int    `json:"mode"` // 十进制
+	IsLink    bool   `json:"isLink"`
+	IsDir     bool   `json:"isDir"`
+	IsSymLink bool   `json:"isSymLink"`
+	LinkPath  string `json:"linkPath"`
 }
 
 type ChmodReq struct {

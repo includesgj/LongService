@@ -299,7 +299,7 @@ const docTemplate = `{
         },
         "/files/create": {
             "post": {
-                "description": "创建文件",
+                "description": "创建文件 IsSymLink软链接 IsLink硬链接",
                 "consumes": [
                     "application/json"
                 ],
@@ -1002,12 +1002,23 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "isDir",
+                "isLink",
+                "isSymLink",
                 "mode",
                 "path"
             ],
             "properties": {
                 "isDir": {
                     "type": "boolean"
+                },
+                "isLink": {
+                    "type": "boolean"
+                },
+                "isSymLink": {
+                    "type": "boolean"
+                },
+                "linkPath": {
+                    "type": "string"
                 },
                 "mode": {
                     "description": "十进制",

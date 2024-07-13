@@ -258,7 +258,6 @@ func (f *FileService) Rename(req FileRenameReq) error {
 	isDir 是否文件夹
 }
 把需要到回收站的放到 根目录下的.soul_power 文件命名 (删除时间 原来的路径 别忘了名称也算 分开写 )
- TODO 把回收站的加入数据库 字段为 1, 路径 2, 来自哪里 3, 是否为
 */
 func (f *FileService) Remove(req RemoveReq) error {
 	// 真删
@@ -296,21 +295,29 @@ func (f *FileService) Remove(req RemoveReq) error {
 }
 
 // Create 创建文件
-/*
-先查找当前路径下有没有
-TODO 创建链接是啥?
-在创建
-
-*/
 func (f *FileService) Create(req CreateReq) error {
 
 	if err := FileIsExist(req.Path); err != nil {
 		return err
 	}
 
+	if req.Mode == 0 {
+		// 如果有父就继承父
+		fileInfo, err := os.Stat(filepath.Dir(req.Path))
+		if err == nil {
+			req.Mode = int(fileInfo.Mode().Perm())
+		} else {
+			req.Mode = 0755
+		}
+	}
+
 	// 此时没有同名的可以创建
 	if req.IsDir {
 		if err := CreateDir(req); err != nil {
+			return err
+		}
+	} else if req.IsLink {
+		if err := CreateLink(req); err != nil {
 			return err
 		}
 	} else {

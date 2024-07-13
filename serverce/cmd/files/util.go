@@ -179,6 +179,21 @@ func CreateDir(req CreateReq) error {
 	return nil
 }
 
+func CreateLink(req CreateReq) error {
+	fs := afero.NewOsFs()
+
+	if info, _ := fs.Stat(req.LinkPath); info == nil {
+		return errors.New("链接文件不存在")
+	}
+	if req.IsSymLink {
+		osFs := afero.OsFs{}
+		return osFs.SymlinkIfPossible(req.LinkPath, req.Path)
+	} else {
+		return os.Link(req.LinkPath, req.Path)
+	}
+
+}
+
 func NewFileInfo(op FileOption) (*FileInfo, error) {
 	var appFs = afero.NewOsFs()
 

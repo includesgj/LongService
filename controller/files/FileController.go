@@ -163,7 +163,7 @@ func FileReMove(c *gin.Context) {
 
 // FileCreate 创建文件
 // @Summary      创建文件
-// @Description  创建文件
+// @Description  创建文件 IsSymLink软链接 IsLink硬链接
 // @Tags         File
 // @Accept       json
 // @Produce      json
@@ -176,7 +176,6 @@ func FileReMove(c *gin.Context) {
 func FileCreate(c *gin.Context) {
 	req := files.CreateReq{}
 	if err := util.CheckBindAndValidate(&req, c); err != nil {
-		response.Response(c, http.StatusBadRequest, 400, nil, err.Error())
 		return
 	}
 	if err := service.Create(req); err != nil {
