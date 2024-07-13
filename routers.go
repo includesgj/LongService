@@ -73,6 +73,7 @@ func CollectRoute(r *gin.Engine) *gin.Engine {
 	sshGroup := r.Group("/ssh")
 	{
 		sshGroup.GET("/operate", sshtro.SshService)
+		sshGroup.GET("/connect", sshtro.SshConnect)
 	}
 
 	return r

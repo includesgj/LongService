@@ -853,6 +853,66 @@ paths:
       summary: 面板登陆日志
       tags:
       - logs
+  /ssh/connect:
+    get:
+      consumes:
+      - application/json
+      description: 连接远程终端
+      parameters:
+      - description: ip地址
+        in: query
+        name: host
+        type: string
+      - description: 端口
+        in: query
+        name: port
+        type: string
+      - description: 密码
+        in: query
+        name: password
+        type: string
+      - description: 用户名
+        in: query
+        name: username
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "201":
+          description: Created
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: 连接远程终端
+      tags:
+      - ssh
+  /ssh/operate:
+    get:
+      consumes:
+      - application/json
+      description: 修改ssh服务 operate有两种值 1, enable (开启) 2, disable (关闭)
+      parameters:
+      - description: operate
+        in: query
+        name: operate
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "201":
+          description: Created
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: 修改ssh服务
+      tags:
+      - ssh
   /sys/info:
     get:
       consumes:

@@ -2,6 +2,7 @@ package main
 
 import (
 	sdb "GinProject12/databases"
+	utssh "GinProject12/util/ssh"
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,10 +25,10 @@ import (
 // @externalDocs.description	OpenAPI
 // @externalDocs.url			https://swagger.io/resources/open-api/
 func main() {
-	//sdb.GetMysqlDB()
-	//defer sdb.CloseMysql()
 	sdb.GetDm()
 	defer sdb.CloseDm()
+	go utssh.Heartbeat()
+
 	r := gin.Default()
 	r = CollectRoute(r)
 	panic(r.Run())

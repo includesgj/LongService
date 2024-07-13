@@ -744,6 +744,98 @@ const docTemplate = `{
                 }
             }
         },
+        "/ssh/connect": {
+            "get": {
+                "description": "连接远程终端",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ssh"
+                ],
+                "summary": "连接远程终端",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ip地址",
+                        "name": "host",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "端口",
+                        "name": "port",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "密码",
+                        "name": "password",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "用户名",
+                        "name": "username",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/ssh/operate": {
+            "get": {
+                "description": "修改ssh服务 operate有两种值 1, enable (开启) 2, disable (关闭)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ssh"
+                ],
+                "summary": "修改ssh服务",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "operate",
+                        "name": "operate",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/sys/info": {
             "get": {
                 "description": "服务器硬件信息",

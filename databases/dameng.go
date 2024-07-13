@@ -18,9 +18,9 @@ import (
 
 var (
 	DB     *sql.DB
-	dbUser = "SYSDBA"        // dmdba
-	pwd    = "SYSDBA001"     // 123456
-	addr   = "192.168.1.150" // "172.16.102.211" // 学校109
+	dbUser = "SYSDBA"    // dmdba
+	pwd    = "SYSDBA001" // 123456
+	addr   = "127.0.0.1" // "192.168.10.105" //"192.168.1.150" // "172.16.102.211" // 学校109
 	port   = "5236"
 )
 

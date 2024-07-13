@@ -6,17 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="9b1174b4-61f4-479e-a4c5-cab829538dc7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/arm64" beforeDir="false" afterPath="$PROJECT_DIR$/arm64" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/user/UserController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/user/UserController.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/docs.go" beforeDir="false" afterPath="$PROJECT_DIR$/docs/docs.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/swagger.json" beforeDir="false" afterPath="$PROJECT_DIR$/docs/swagger.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/swagger.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/swagger.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GinProject12" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/arm64" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/ssh/SshController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/ssh/SshController.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/databases/dameng.go" beforeDir="false" afterPath="$PROJECT_DIR$/databases/dameng.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routers.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverce/cmd/files/cmd.go" beforeDir="false" afterPath="$PROJECT_DIR$/util/cmd/cmd.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverce/cmd/files/tar.go" beforeDir="false" afterPath="$PROJECT_DIR$/serverce/cmd/files/tar.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverce/cmd/files/util.go" beforeDir="false" afterPath="$PROJECT_DIR$/serverce/cmd/files/util.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverce/cmd/files/zip.go" beforeDir="false" afterPath="$PROJECT_DIR$/serverce/cmd/files/zip.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,6 +65,22 @@
       <recent name="$PROJECT_DIR$/util/cmd" />
       <recent name="$PROJECT_DIR$/util" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="go build SshController.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="GinProject12" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <package value="GinProject12" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/controller/ssh/SshController.go" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Build.go build SshController.go" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
