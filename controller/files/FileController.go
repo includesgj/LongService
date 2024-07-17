@@ -150,7 +150,6 @@ func FileRename(c *gin.Context) {
 func FileReMove(c *gin.Context) {
 	req := files.RemoveReq{}
 	if err := util.CheckBindAndValidate(&req, c); err != nil {
-		response.Response(c, http.StatusBadRequest, 400, nil, err.Error())
 		return
 	}
 

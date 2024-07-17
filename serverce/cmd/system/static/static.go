@@ -19,6 +19,16 @@ func (p *Cpu) GetCpuInfo() error {
 		return err
 	}
 
+	totalPercent, err := cpu.Percent(0, false)
+	if err != nil {
+		return err
+	}
+
+	if len(totalPercent) == 1 {
+		p.CpuUsedPercent = totalPercent[0]
+		p.CpuUsed = p.CpuUsedPercent * 0.01 * float64(p.NumCPU)
+	}
+
 	// cpu的使用率
 	for _, c := range cpuPercent {
 		p.Percentage = append(p.Percentage, float32(c))
@@ -65,11 +75,11 @@ func (p *Memory) GetMemoryInfo() error {
 		return err
 	}
 
-	p.Total = bytesToMB(memInfo.Total)
+	p.MTotal = bytesToMB(memInfo.Total)
 	p.Available = bytesToMB(memInfo.Available)
-	p.Used = bytesToMB(memInfo.Used)
-	p.Free = bytesToMB(memInfo.Free)
-	p.UsedPercent = memInfo.UsedPercent
+	p.MUsed = bytesToMB(memInfo.Used)
+	p.MFree = bytesToMB(memInfo.Free)
+	p.MUsedPercent = memInfo.UsedPercent
 	p.SwapTotal = bytesToMB(memInfo.SwapTotal)
 	p.SwapFree = bytesToMB(memInfo.SwapFree)
 	p.SwapPercent = p.SwapUsed / p.SwapTotal

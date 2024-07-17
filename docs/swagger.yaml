@@ -1,4 +1,39 @@
 definitions:
+  condition.DiskIo:
+    properties:
+      ioCount:
+        type: integer
+      ioReadBytes:
+        type: integer
+      ioReadTime:
+        type: integer
+      ioWriteBytes:
+        type: integer
+      ioWriterTime:
+        type: integer
+    type: object
+  condition.Flow:
+    properties:
+      bytesRecv:
+        type: integer
+      bytesSent:
+        type: integer
+      recv:
+        type: number
+      recvUnit:
+        type: string
+      sent:
+        type: number
+      sentUnit:
+        type: string
+    type: object
+  condition.NetOrDiskName:
+    properties:
+      name:
+        items:
+          type: string
+        type: array
+    type: object
   files.ChmodReq:
     properties:
       mode:
@@ -26,10 +61,6 @@ definitions:
       path:
         type: string
     required:
-    - isDir
-    - isLink
-    - isSymLink
-    - mode
     - path
     type: object
   files.DirSizeReq:
@@ -178,9 +209,7 @@ definitions:
       realDel:
         type: boolean
     required:
-    - isDir
     - path
-    - realDel
     type: object
   login_log_server.SSHHistory:
     properties:
@@ -249,6 +278,27 @@ definitions:
       loginTime:
         type: string
     type: object
+  model.Monitor:
+    properties:
+      createTime:
+        type: string
+      createUser:
+        type: string
+      detail:
+        type: string
+      down:
+        type: number
+      hardWare:
+        type: string
+      id:
+        type: integer
+      notifyEmail:
+        type: string
+      threshold:
+        type: number
+      up:
+        type: number
+    type: object
   model.PageInfo:
     properties:
       page:
@@ -286,34 +336,6 @@ definitions:
     - password
     - username
     type: object
-  monitor.DiskIo:
-    properties:
-      ioCount:
-        type: integer
-      ioReadBytes:
-        type: integer
-      ioReadTime:
-        type: integer
-      ioWriteBytes:
-        type: integer
-      ioWriterTime:
-        type: integer
-    type: object
-  monitor.Flow:
-    properties:
-      bytesRecv:
-        type: integer
-      bytesSent:
-        type: integer
-      recv:
-        type: number
-      recvUnit:
-        type: string
-      sent:
-        type: number
-      sentUnit:
-        type: string
-    type: object
   sysMes.LocalInfo:
     properties:
       hostName:
@@ -332,6 +354,10 @@ definitions:
   sysStatic.SysStatus:
     properties:
       available:
+        type: number
+      cpuUsed:
+        type: number
+      cpuUsedPercent:
         type: number
       device:
         type: string
@@ -354,6 +380,14 @@ definitions:
       load15:
         type: number
       loadUsagePercent:
+        type: number
+      mFree:
+        type: number
+      mTotal:
+        type: number
+      mUsed:
+        type: number
+      mUsedPercent:
         type: number
       model:
         type: string
@@ -861,6 +895,81 @@ paths:
       summary: 面板登陆日志
       tags:
       - logs
+  /monitor/add:
+    post:
+      consumes:
+      - application/json
+      description: 添加监控系统信息
+      parameters:
+      - description: 需要用户 hardware是检测的硬件 detail是如果是io或net才需要传要不是all要不是单个名称 Threshold是百分比用户设定的
+          up是io或net的上行或上传 down反过来 notifyEmail是要通知邮箱可以多个传过来要用,分割
+        in: body
+        name: req
+        schema:
+          $ref: '#/definitions/model.Monitor'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: 添加监控系统信息
+      tags:
+      - monitor
+  /monitor/del:
+    get:
+      consumes:
+      - application/json
+      description: 按照id删除监控
+      parameters:
+      - description: 后端传的id
+        in: query
+        name: id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: 按照id删除监控
+      tags:
+      - monitor
+  /monitor/sel:
+    post:
+      consumes:
+      - application/json
+      description: 查询监控系统信息
+      parameters:
+      - description: 分页
+        in: body
+        name: page
+        schema:
+          $ref: '#/definitions/model.PageInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: 查询监控系统信息
+      tags:
+      - monitor
   /ssh/connect:
     get:
       consumes:
@@ -958,7 +1067,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/monitor.DiskIo'
+            $ref: '#/definitions/condition.DiskIo'
         "400":
           description: Bad Request
         "404":
@@ -966,6 +1075,32 @@ paths:
         "500":
           description: Internal Server Error
       summary: 获取io监控信息
+      tags:
+      - system
+  /sys/name:
+    get:
+      consumes:
+      - application/json
+      description: 获取io或net名称
+      parameters:
+      - description: io 或者是 net
+        in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/condition.NetOrDiskName'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: 获取io或net名称
       tags:
       - system
   /sys/net:
@@ -984,7 +1119,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/monitor.Flow'
+            $ref: '#/definitions/condition.Flow'
         "400":
           description: Bad Request
         "404":

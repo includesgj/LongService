@@ -1,4 +1,4 @@
-package monitor
+package condition
 
 /*
 Flow
@@ -22,4 +22,8 @@ type DiskIo struct {
 	IoReadBytes  uint64 `json:"ioReadBytes"`
 	IoWriterTime uint64 `json:"ioWriterTime"`
 	IoReadTime   uint64 `json:"ioReadTime"`
+}
+
+type NetOrDiskName struct {
+	Name []string `json:"name"`
 }

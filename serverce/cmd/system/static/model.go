@@ -8,22 +8,24 @@ type SysStatus struct {
 }
 
 type Cpu struct {
-	NumCPU      uint      `json:"numCPU"`
-	NumLogicCpu uint      `json:"numLogicCpu"`
-	Model       string    `json:"model"`
-	Percentage  []float32 `json:"percentage"`
+	NumCPU         uint      `json:"numCPU"`
+	NumLogicCpu    uint      `json:"numLogicCpu"`
+	Model          string    `json:"model"`
+	CpuUsedPercent float64   `json:"cpuUsedPercent"`
+	CpuUsed        float64   `json:"cpuUsed"`
+	Percentage     []float32 `json:"percentage"`
 }
 
 type Memory struct {
-	Total       float64 `json:"total"`
-	Available   float64 `json:"available"`
-	Used        float64 `json:"used"`
-	Free        float64 `json:"free"`
-	UsedPercent float64 `json:"usedPercent"`
-	SwapTotal   float64 `json:"swapTotal"`
-	SwapUsed    float64 `json:"swapUsed"`
-	SwapFree    float64 `json:"swapFree"`
-	SwapPercent float64 `json:"swapPercent"`
+	MTotal       float64 `json:"mTotal"`
+	Available    float64 `json:"available"`
+	MUsed        float64 `json:"mUsed"`
+	MFree        float64 `json:"mFree"`
+	MUsedPercent float64 `json:"mUsedPercent"`
+	SwapTotal    float64 `json:"swapTotal"`
+	SwapUsed     float64 `json:"swapUsed"`
+	SwapFree     float64 `json:"swapFree"`
+	SwapPercent  float64 `json:"swapPercent"`
 }
 
 type Load struct {

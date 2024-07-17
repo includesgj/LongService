@@ -116,8 +116,8 @@ type FileRenameReq struct {
 
 type RemoveReq struct {
 	Path    string `json:"path" validate:"required"`
-	RealDel bool   `json:"realDel" validate:"required"`
-	IsDir   bool   `json:"isDir" validate:"required"`
+	RealDel bool   `json:"realDel"`
+	IsDir   bool   `json:"isDir"`
 }
 
 type CreateReq struct {

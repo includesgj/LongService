@@ -744,6 +744,121 @@ const docTemplate = `{
                 }
             }
         },
+        "/monitor/add": {
+            "post": {
+                "description": "添加监控系统信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "monitor"
+                ],
+                "summary": "添加监控系统信息",
+                "parameters": [
+                    {
+                        "description": "需要用户 hardware是检测的硬件 detail是如果是io或net才需要传要不是all要不是单个名称 Threshold是百分比用户设定的 up是io或net的上行或上传 down反过来 notifyEmail是要通知邮箱可以多个传过来要用,分割",
+                        "name": "req",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/model.Monitor"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/monitor/del": {
+            "get": {
+                "description": "按照id删除监控",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "monitor"
+                ],
+                "summary": "按照id删除监控",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "后端传的id",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/monitor/sel": {
+            "post": {
+                "description": "查询监控系统信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "monitor"
+                ],
+                "summary": "查询监控系统信息",
+                "parameters": [
+                    {
+                        "description": "分页",
+                        "name": "page",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/model.PageInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/ssh/connect": {
             "get": {
                 "description": "连接远程终端",
@@ -893,7 +1008,47 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/monitor.DiskIo"
+                            "$ref": "#/definitions/condition.DiskIo"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/sys/name": {
+            "get": {
+                "description": "获取io或net名称",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "system"
+                ],
+                "summary": "获取io或net名称",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "io 或者是 net",
+                        "name": "name",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/condition.NetOrDiskName"
                         }
                     },
                     "400": {
@@ -933,7 +1088,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/monitor.Flow"
+                            "$ref": "#/definitions/condition.Flow"
                         }
                     },
                     "400": {
@@ -982,6 +1137,60 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "condition.DiskIo": {
+            "type": "object",
+            "properties": {
+                "ioCount": {
+                    "type": "integer"
+                },
+                "ioReadBytes": {
+                    "type": "integer"
+                },
+                "ioReadTime": {
+                    "type": "integer"
+                },
+                "ioWriteBytes": {
+                    "type": "integer"
+                },
+                "ioWriterTime": {
+                    "type": "integer"
+                }
+            }
+        },
+        "condition.Flow": {
+            "type": "object",
+            "properties": {
+                "bytesRecv": {
+                    "type": "integer"
+                },
+                "bytesSent": {
+                    "type": "integer"
+                },
+                "recv": {
+                    "type": "number"
+                },
+                "recvUnit": {
+                    "type": "string"
+                },
+                "sent": {
+                    "type": "number"
+                },
+                "sentUnit": {
+                    "type": "string"
+                }
+            }
+        },
+        "condition.NetOrDiskName": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "files.ChmodReq": {
             "type": "object",
             "required": [
@@ -1001,10 +1210,6 @@ const docTemplate = `{
         "files.CreateReq": {
             "type": "object",
             "required": [
-                "isDir",
-                "isLink",
-                "isSymLink",
-                "mode",
                 "path"
             ],
             "properties": {
@@ -1238,9 +1443,7 @@ const docTemplate = `{
         "files.RemoveReq": {
             "type": "object",
             "required": [
-                "isDir",
-                "path",
-                "realDel"
+                "path"
             ],
             "properties": {
                 "isDir": {
@@ -1354,6 +1557,38 @@ const docTemplate = `{
                 }
             }
         },
+        "model.Monitor": {
+            "type": "object",
+            "properties": {
+                "createTime": {
+                    "type": "string"
+                },
+                "createUser": {
+                    "type": "string"
+                },
+                "detail": {
+                    "type": "string"
+                },
+                "down": {
+                    "type": "number"
+                },
+                "hardWare": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "notifyEmail": {
+                    "type": "string"
+                },
+                "threshold": {
+                    "type": "number"
+                },
+                "up": {
+                    "type": "number"
+                }
+            }
+        },
         "model.PageInfo": {
             "type": "object",
             "required": [
@@ -1409,49 +1644,6 @@ const docTemplate = `{
                 }
             }
         },
-        "monitor.DiskIo": {
-            "type": "object",
-            "properties": {
-                "ioCount": {
-                    "type": "integer"
-                },
-                "ioReadBytes": {
-                    "type": "integer"
-                },
-                "ioReadTime": {
-                    "type": "integer"
-                },
-                "ioWriteBytes": {
-                    "type": "integer"
-                },
-                "ioWriterTime": {
-                    "type": "integer"
-                }
-            }
-        },
-        "monitor.Flow": {
-            "type": "object",
-            "properties": {
-                "bytesRecv": {
-                    "type": "integer"
-                },
-                "bytesSent": {
-                    "type": "integer"
-                },
-                "recv": {
-                    "type": "number"
-                },
-                "recvUnit": {
-                    "type": "string"
-                },
-                "sent": {
-                    "type": "number"
-                },
-                "sentUnit": {
-                    "type": "string"
-                }
-            }
-        },
         "sysMes.LocalInfo": {
             "type": "object",
             "properties": {
@@ -1479,6 +1671,12 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "available": {
+                    "type": "number"
+                },
+                "cpuUsed": {
+                    "type": "number"
+                },
+                "cpuUsedPercent": {
                     "type": "number"
                 },
                 "device": {
@@ -1512,6 +1710,18 @@ const docTemplate = `{
                     "type": "number"
                 },
                 "loadUsagePercent": {
+                    "type": "number"
+                },
+                "mFree": {
+                    "type": "number"
+                },
+                "mTotal": {
+                    "type": "number"
+                },
+                "mUsed": {
+                    "type": "number"
+                },
+                "mUsedPercent": {
                     "type": "number"
                 },
                 "model": {

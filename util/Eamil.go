@@ -49,11 +49,20 @@ func SendEmailCode(to string) error {
 		return err
 	}
 
+	// 验证码时效
 	VCode[to] = &CodeStore{
 		Code:      code,
 		Generated: time.Now(),
 	}
 
+	return nil
+}
+
+func SendEmailWarning(to string, msg string) error {
+	body := fmt.Sprintf("%s", msg)
+	if err := sendToMail(to, "龙芯服务告警", body); err != nil {
+		return err
+	}
 	return nil
 }
 

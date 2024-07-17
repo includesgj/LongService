@@ -270,7 +270,7 @@ func (f *FileService) Remove(req RemoveReq) error {
 	// 假删
 	// 先创建存放回收站的文件夹 .soul_power
 	if err := FileIsExist("/.soul_power"); err == nil {
-		if err = CreateDir(CreateReq{Path: "./soul_power", Mode: 0755}); err != nil {
+		if err = CreateDir(CreateReq{Path: "/.soul_power", Mode: 0755}); err != nil {
 			return err
 		}
 	}
@@ -287,10 +287,24 @@ func (f *FileService) Remove(req RemoveReq) error {
 		return err
 	}
 
-	newPath := fmt.Sprintf("_sp_%s%s_p_%d_%d", "file", rName, int(size), deleteTime.Unix())
+	newPath := fmt.Sprintf("/.soul_power/_sp_%s%s_p_%d_%d", "file", rName, int(size), deleteTime.Unix())
 	if err = os.Rename(req.Path, newPath); err != nil {
 		return err
 	}
+
+	// 存入数据库
+	if _, err = sdb.InsertRecycleBinInfo(model.RecycleBin{
+		DeleteTime: time.Now().String(),
+		SourcePath: req.Path,
+		IsDir:      req.IsDir,
+		From:       "/.soul_power",
+		RName:      newPath,
+		Name:       req.Path,
+		Size:       int(size),
+	}); err != nil {
+		return err
+	}
+
 	return nil
 }
 

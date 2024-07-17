@@ -1,4 +1,4 @@
-package monitor
+package condition
 
 import (
 	"GinProject12/util"
@@ -42,6 +42,34 @@ func (p *Flow) GetFlowInfoByName(name string) error {
 
 	}
 
+	return nil
+}
+
+func (f *NetOrDiskName) GetNetOrDiskName(name string) error {
+	if name == "net" {
+		all, err := net.IOCounters(true)
+
+		if err != nil {
+			fmt.Println("Error:", err)
+			return err
+		}
+		for _, item := range all {
+			f.Name = append(f.Name, item.Name)
+		}
+
+	} else if name == "io" {
+		counters, err := disk.IOCounters()
+		if err != nil {
+			fmt.Println("Error:", err)
+			return err
+		}
+
+		for _, item := range counters {
+			f.Name = append(f.Name, item.Name)
+		}
+	} else {
+		return errors.New("没有该参数")
+	}
 	return nil
 }
 

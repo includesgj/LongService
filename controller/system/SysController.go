@@ -76,16 +76,16 @@ func SysStatic(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        name query string false "该值表示要监控的网络名称All表示全部"
-// @Success      200 {object} monitor.Flow
+// @Success      200 {object} condition.Flow
 // @Failure      400
 // @Failure      404
 // @Failure      500
 // @Router       /sys/net [GET]
 func SysMonitorNet(c *gin.Context) {
 	name := c.Query("name")
-	flow := &monitor.Flow{}
+	flow := &condition.Flow{}
 
-	if name != "" {
+	if name != "all" {
 		if err := flow.GetFlowInfoByName(name); err != nil {
 			response.Response(c, http.StatusInternalServerError, 500, nil, "获取失败")
 		}
@@ -105,14 +105,14 @@ func SysMonitorNet(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        name query string false "该值表示要监控的磁盘名称All表示全部"
-// @Success      200  {object}  monitor.DiskIo
+// @Success      200  {object}  condition.DiskIo
 // @Failure      400
 // @Failure      404
 // @Failure      500
 // @Router       /sys/io [GET]
 func SysMonitorIo(c *gin.Context) {
 	name := c.Query("name")
-	io := &monitor.DiskIo{}
+	io := &condition.DiskIo{}
 
 	if name != "" {
 		if err := io.GetDiskIoInfoByName(name); err != nil {
@@ -124,4 +124,27 @@ func SysMonitorIo(c *gin.Context) {
 		}
 	}
 	response.Success(c, gin.H{"data": io}, "成功")
+}
+
+// GetNetOrDiskName 获取io或net名称
+// @Summary      获取io或net名称
+// @Description  获取io或net名称
+// @Tags         system
+// @Accept       json
+// @Produce      json
+// @Param        name query string false "io 或者是 net"
+// @Success      200  {object}  condition.NetOrDiskName
+// @Failure      400
+// @Failure      404
+// @Failure      500
+// @Router       /sys/name [GET]
+func GetNetOrDiskName(c *gin.Context) {
+	name := c.Query("name")
+
+	var s condition.NetOrDiskName
+	if err := s.GetNetOrDiskName(name); err != nil {
+		response.Response(c, http.StatusInternalServerError, 500, nil, "获取失败")
+	}
+	response.Success(c, gin.H{"data": s}, "成功")
+
 }

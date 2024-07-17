@@ -8,13 +8,21 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/arm64" beforeDir="false" afterPath="$PROJECT_DIR$/arm64" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controller/files/FileController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/files/FileController.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/system/SysController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/system/SysController.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/databases/dameng.go" beforeDir="false" afterPath="$PROJECT_DIR$/databases/dameng.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/docs.go" beforeDir="false" afterPath="$PROJECT_DIR$/docs/docs.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/swagger.json" beforeDir="false" afterPath="$PROJECT_DIR$/docs/swagger.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/swagger.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/swagger.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/model/model.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routers.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/serverce/cmd/files/file.go" beforeDir="false" afterPath="$PROJECT_DIR$/serverce/cmd/files/file.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/serverce/cmd/files/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/serverce/cmd/files/model.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverce/cmd/files/util.go" beforeDir="false" afterPath="$PROJECT_DIR$/serverce/cmd/files/util.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverce/cmd/system/monitor/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/serverce/cmd/system/monitor/model.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverce/cmd/system/monitor/monitor.go" beforeDir="false" afterPath="$PROJECT_DIR$/serverce/cmd/system/monitor/monitor.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverce/cmd/system/static/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/serverce/cmd/system/static/model.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverce/cmd/system/static/static.go" beforeDir="false" afterPath="$PROJECT_DIR$/serverce/cmd/system/static/static.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/Eamil.go" beforeDir="false" afterPath="$PROJECT_DIR$/util/Eamil.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

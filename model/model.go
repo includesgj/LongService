@@ -1,5 +1,7 @@
 package model
 
+import "time"
+
 type User struct {
 	ID       int    `json:"id"`
 	Username string `json:"username" validate:"required"`
@@ -45,4 +47,16 @@ type LoginLog struct {
 	LoginTime string `json:"loginTime"`
 	Area      string `json:"area"`
 	IsLogin   bool   `json:"isLogin"` // 是否登陆成功
+}
+
+type Monitor struct {
+	Id          int       `json:"id"`
+	CreateUser  string    `json:"createUser"`
+	CreateTime  time.Time `json:"createTime"`
+	HardWare    string    `json:"hardWare"`
+	Detail      string    `json:"detail"`
+	Threshold   float64   `json:"threshold"`
+	Up          float64   `json:"up"`
+	Down        float64   `json:"down"`
+	NotifyEmail string    `json:"notifyEmail"`
 }

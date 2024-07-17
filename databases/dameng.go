@@ -18,9 +18,9 @@ import (
 
 var (
 	DB     *sql.DB
-	dbUser = "SYSDBA"          // dmdba
-	pwd    = "SYSDBA001"       // 123456
-	addr   = "192.168.122.158" // "127.0.0.1" // "192.168.10.105" //"192.168.1.150" // "172.16.102.211" // 学校109
+	dbUser = "SYSDBA"         // dmdba
+	pwd    = "SYSDBA001"      // 123456
+	addr   = "192.168.50.192" // "127.0.0.1" // "192.168.10.105" //"192.168.1.150" // "172.16.102.211" // 学校109
 	port   = "5236"
 )
 
@@ -83,33 +83,6 @@ func CloseDm() {
 	}
 }
 
-//// AllStudents 给老师看的 查询所有学生
-//func AllStudents() []model.Student {
-//	query, err := DB.Query(`select "id", "name", "student_id", "password", "class", "telephone" from "gorjb"."student"`)
-//
-//	if err != nil {
-//		log.Println(err.Error() + " select student error")
-//		return nil
-//	}
-//
-//	defer query.Close()
-//
-//	var student []model.Student
-//
-//	for query.Next() {
-//		var stu model.Student
-//		err = query.Scan(&stu.ID, &stu.Name, &stu.StudentId, &stu.Class, &stu.Password, &stu.Telephone)
-//
-//		if err != nil {
-//			log.Println(err.Error())
-//			return nil
-//		}
-//		student = append(student, stu)
-//	}
-//	return student
-//
-//}
-
 func InsertUserInfo(info *model.User) {
 
 	sql := fmt.Sprintf(`INSERT INTO "gorjb"."user" ("username", "password", "email") values('%s', '%s', '%s')`, info.Username, info.Password, info.Email)
@@ -146,18 +119,6 @@ func FindUserByEvery(query string, val string) *model.User {
 		return nil
 	}
 	return &user
-}
-
-// DeleteUserById 给老师用的 删除用户
-func DeleteUserById(id int) {
-	sql := fmt.Sprintf(`DELETE FROM "gorjb"."user" WHERE "id" = '%d'`, id)
-	_, err := DB.Exec(sql)
-
-	if err != nil {
-		log.Println(err.Error() + " delete user fail")
-		return
-	}
-	log.Printf("Delete user id is %d\n", id)
 }
 
 func FindAdminByEvery(query string, val string) *model.Admin {
@@ -328,5 +289,62 @@ func LoginLogPage(page model.PageInfo) ([]model.LoginLog, error) {
 
 	}
 
+	return list, nil
+}
+
+func InsertMonitorInfo(info model.Monitor) (int, error) {
+
+	sql := fmt.Sprintf(`INSERT INTO "gorjb"."Monitor" ("createTime", "createUser", "hardWare", "threshold", "detail", "up", "down", "notifyEmail") values('%s', '%s', '%s', '%.2f', '%s', '%.2f', '%.2f', '%s')`, info.CreateTime, info.CreateUser, info.HardWare, info.Threshold, info.Detail, info.Up, info.Down, info.NotifyEmail)
+
+	exec, err := DB.Exec(sql)
+	if err != nil {
+		return -1, err
+	}
+	id, err := exec.LastInsertId()
+
+	if err != nil {
+		return -1, err
+	}
+
+	log.Printf("插入成功id=%d\n", id)
+	return int(id), nil
+}
+
+func DelMonitorInfo(id int) error {
+	sql := fmt.Sprintf(`DELETE FROM "gorjb"."Monitor" WHERE "id" = '%d'`, id)
+	_, err := DB.Exec(sql)
+	if err != nil {
+		return err
+	}
+	log.Println("删除成功")
+	return nil
+}
+
+func SelectMonitorPage(page model.PageInfo) ([]model.Monitor, error) {
+	sql := fmt.Sprintf(`SELECT "id", "createTime", "createUser", "hardWare", "threshold", "detail", "up", "down", "notifyEmail" FROM "gorjb"."RecycleBin" ORDER BY 'createTime' OFFSET %d ROWS FETCH NEXT %d ROWS ONLY`, page.Page-1, page.PageSize)
+
+	exec, err := DB.Query(sql)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	if exec.Err() != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	var list []model.Monitor
+
+	for exec.Next() {
+		var info model.Monitor
+		err = exec.Scan(&info.Id, &info.CreateTime, &info.CreateUser, &info.HardWare, &info.Threshold, &info.Detail, &info.Up, &info.Down, &info.NotifyEmail)
+
+		if err != nil {
+			log.Println(err.Error())
+			return nil, err
+		}
+		list = append(list, info)
+	}
 	return list, nil
 }

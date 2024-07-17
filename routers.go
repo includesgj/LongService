@@ -4,6 +4,7 @@ import (
 	"GinProject12/controller/email"
 	"GinProject12/controller/files"
 	"GinProject12/controller/logs"
+	monitortro "GinProject12/controller/monitor"
 	"GinProject12/controller/ssh"
 	systemtro "GinProject12/controller/system"
 	"GinProject12/controller/user"
@@ -39,6 +40,7 @@ func CollectRoute(r *gin.Engine) *gin.Engine {
 		sysGroup.GET("/static", systemtro.SysStatic)
 		sysGroup.GET("/net", systemtro.SysMonitorNet)
 		sysGroup.GET("/io", systemtro.SysMonitorIo)
+		sysGroup.GET("/name", systemtro.GetNetOrDiskName)
 	}
 
 	logGroup := r.Group("/logs")
@@ -74,6 +76,12 @@ func CollectRoute(r *gin.Engine) *gin.Engine {
 	{
 		sshGroup.GET("/operate", sshtro.SshService)
 		sshGroup.GET("/connect", sshtro.SshConnect)
+	}
+	monitorGroup := r.Group("/monitor")
+	{
+		monitorGroup.POST("/add", monitortro.Monitor)
+		monitorGroup.GET("/del", monitortro.DelMonitor)
+		monitorGroup.POST("/sel", monitortro.SelectMonitor)
 	}
 
 	return r
