@@ -1,15 +1,16 @@
 package sdb
 
 import (
+	"GinProject12/config"
 	"GinProject12/model"
 	"database/sql"
-	"errors"
 	"fmt"
 	_ "gitee.com/travelliu/dm"
 	_ "github.com/golang/snappy"
 	"log"
 	"net"
 	"strconv"
+	"time"
 )
 
 /*
@@ -17,18 +18,13 @@ import (
 */
 
 var (
-	DB     *sql.DB
-	dbUser = "SYSDBA"         // dmdba
-	pwd    = "SYSDBA001"      // 123456
-	addr   = "192.168.50.192" // "127.0.0.1" // "192.168.10.105" //"192.168.1.150" // "172.16.102.211" // 学校109
-	port   = "5236"
+	DB *sql.DB
 )
 
-func getLocalIPv4() (string, error) {
-	fmt.Println("如果数据库不在本机上就把ip改到运行机上把这条删除!")
+func GetLocalIPv4() string {
 	interfaces, err := net.Interfaces()
 	if err != nil {
-		return "", err
+		return ""
 	}
 
 	for _, iface := range interfaces {
@@ -41,17 +37,17 @@ func getLocalIPv4() (string, error) {
 		for _, add := range localAddrs {
 			ip, _, _ := net.ParseCIDR(add.String())
 			if ip != nil && ip.To4() != nil && !ip.IsLoopback() {
-				return ip.String(), nil
+				return ip.String()
 			}
 		}
 	}
 
-	return "", errors.New("no IPv4 address found")
+	return ""
 }
 
 func InitDM() {
 	var err error
-	DB, err = sql.Open("dm", fmt.Sprintf("dm://%s:%s@%s:%s", dbUser, pwd, addr, port))
+	DB, err = sql.Open("dm", fmt.Sprintf("dm://%s:%s@%s:%s", config.DbUser, config.Pwd, config.Addr, config.Port))
 
 	if err != nil {
 		panic(err.Error())
@@ -264,7 +260,7 @@ func InsertLoginLog(info model.LoginLog) error {
 }
 
 func LoginLogPage(page model.PageInfo) ([]model.LoginLog, error) {
-	sql := fmt.Sprintf(`SELECT "id", "ip", "area", "loginTime", "isLogin" form "gorjb"."LoginLog" ORDER BY 'deleteTime' OFFSET %d ROWS FETCH NEXT %d ROWS ONLY`, page.Page-1, page.PageSize)
+	sql := fmt.Sprintf(`SELECT "id", "ip", "area", "loginTime", "isLogin" from "gorjb"."LoginLog" ORDER BY 'loginTime' OFFSET %d ROWS FETCH NEXT %d ROWS ONLY`, page.Page-1, page.PageSize)
 	exec, err := DB.Query(sql)
 	if err != nil {
 		log.Println(err)
@@ -294,7 +290,7 @@ func LoginLogPage(page model.PageInfo) ([]model.LoginLog, error) {
 
 func InsertMonitorInfo(info model.Monitor) (int, error) {
 
-	sql := fmt.Sprintf(`INSERT INTO "gorjb"."Monitor" ("createTime", "createUser", "hardWare", "threshold", "detail", "up", "down", "notifyEmail") values('%s', '%s', '%s', '%.2f', '%s', '%.2f', '%.2f', '%s')`, info.CreateTime, info.CreateUser, info.HardWare, info.Threshold, info.Detail, info.Up, info.Down, info.NotifyEmail)
+	sql := fmt.Sprintf(`INSERT INTO "gorjb"."Monitor" ("createTime", "createUser", "hardWare", "threshold", "detail", "up", "down", "notifyEmail") values('%s', '%s', '%s', '%.2f', '%s', '%.2f', '%.2f', '%s')`, info.CreateTime.String(), info.CreateUser, info.HardWare, info.Threshold, info.Detail, info.Up, info.Down, info.NotifyEmail)
 
 	exec, err := DB.Exec(sql)
 	if err != nil {
@@ -320,8 +316,8 @@ func DelMonitorInfo(id int) error {
 	return nil
 }
 
-func SelectMonitorPage(page model.PageInfo) ([]model.Monitor, error) {
-	sql := fmt.Sprintf(`SELECT "id", "createTime", "createUser", "hardWare", "threshold", "detail", "up", "down", "notifyEmail" FROM "gorjb"."RecycleBin" ORDER BY 'createTime' OFFSET %d ROWS FETCH NEXT %d ROWS ONLY`, page.Page-1, page.PageSize)
+func SelectMonitor() ([]model.Monitor, error) {
+	sql := fmt.Sprintf(`SELECT "id", "createTime", "createUser", "hardWare", "threshold", "detail", "up", "down", "notifyEmail" FROM "gorjb"."Monitor"`)
 
 	exec, err := DB.Query(sql)
 	if err != nil {
@@ -338,7 +334,9 @@ func SelectMonitorPage(page model.PageInfo) ([]model.Monitor, error) {
 
 	for exec.Next() {
 		var info model.Monitor
-		err = exec.Scan(&info.Id, &info.CreateTime, &info.CreateUser, &info.HardWare, &info.Threshold, &info.Detail, &info.Up, &info.Down, &info.NotifyEmail)
+		var strTime string
+		err = exec.Scan(&info.Id, &strTime, &info.CreateUser, &info.HardWare, &info.Threshold, &info.Detail, &info.Up, &info.Down, &info.NotifyEmail)
+		info.CreateTime, _ = time.Parse("2006-01-02 15:04:05", strTime)
 
 		if err != nil {
 			log.Println(err.Error())
@@ -347,4 +345,178 @@ func SelectMonitorPage(page model.PageInfo) ([]model.Monitor, error) {
 		list = append(list, info)
 	}
 	return list, nil
+}
+
+func SelectMonitorPage(page model.PageInfo) ([]model.Monitor, error) {
+	sql := fmt.Sprintf(`SELECT "id", "createTime", "createUser", "hardWare", "threshold", "detail", "up", "down", "notifyEmail" FROM "gorjb"."Monitor" ORDER BY 'createTime' OFFSET %d ROWS FETCH NEXT %d ROWS ONLY`, page.Page-1, page.PageSize)
+
+	exec, err := DB.Query(sql)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	if exec.Err() != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	var list []model.Monitor
+
+	for exec.Next() {
+		var info model.Monitor
+		var strTime string
+		err = exec.Scan(&info.Id, &strTime, &info.CreateUser, &info.HardWare, &info.Threshold, &info.Detail, &info.Up, &info.Down, &info.NotifyEmail)
+		info.CreateTime, _ = time.Parse("2006-01-02 15:04:05", strTime)
+
+		if err != nil {
+			log.Println(err.Error())
+			return nil, err
+		}
+		list = append(list, info)
+	}
+	return list, nil
+}
+
+/*
+	type Patrol struct {
+		Id           int       `json:"id"`
+		CreateTime   time.Time `json:"createTime"`
+		TargetDetail string    `json:"detail"`
+		CreateUser   string    `json:"createUser"`
+	}
+
+	type PatrolUser struct {
+		PatrolId   int       `json:"patrolId"`
+		PatrolTime time.Time `json:"patrolTime"`
+		User       string    `json:"patrolUser"`
+		Result     bool      `json:"result"`
+		Detail     string    `json:"detail"`
+	}
+*/
+func InsertPatrol(info model.Patrol) (int, error) {
+	sql := fmt.Sprintf(`INSERT INTO "gorjb"."Patrol" ("createTime", "targetDetail", "createUser") values('%s', '%s', '%s')`, info.CreateTime, info.TargetDetail, info.CreateUser)
+
+	exec, err := DB.Exec(sql)
+	if err != nil {
+		return -1, err
+	}
+	id, err := exec.LastInsertId()
+
+	if err != nil {
+		return -1, err
+	}
+
+	log.Printf("插入成功id=%d\n", id)
+	return int(id), nil
+}
+
+func SelectPatrol(page model.PageInfo) ([]model.Patrol, error) {
+	sql := fmt.Sprintf(`SELECT "id", "createTime", "targetDetail", "createUser" FROM "gorjb"."Patrol"  ORDER BY 'createTime' OFFSET %d ROWS FETCH NEXT %d ROWS ONLY`, page.Page-1, page.PageSize)
+
+	exec, err := DB.Query(sql)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	if exec.Err() != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	var list []model.Patrol
+
+	for exec.Next() {
+		var info model.Patrol
+		var strTime string
+		err = exec.Scan(&info.Id, &strTime, &info.TargetDetail, &info.CreateUser)
+		info.CreateTime, _ = time.Parse("2006-01-02 15:04:05", strTime)
+		if err != nil {
+			log.Println(err.Error())
+			return nil, err
+		}
+		list = append(list, info)
+	}
+	return list, nil
+}
+
+func DelPatrol(id int) error {
+	sql := fmt.Sprintf(`DELETE FROM "gorjb"."Patrol" WHERE "id" = '%d'`, id)
+	_, err := DB.Exec(sql)
+	if err != nil {
+		return err
+	}
+	log.Println("删除成功")
+	return nil
+}
+
+/*
+	type PatrolUser struct {
+		PatrolId   int       `json:"patrolId"`
+		PatrolTime time.Time `json:"patrolTime"`
+		User       string    `json:"patrolUser"`
+		Result     bool      `json:"result"`
+		Detail     string    `json:"detail"`
+	}
+*/
+func InsertPatrolUser(info model.PatrolUser) (int, error) {
+	var is = 0
+	if info.Result {
+		is = 1
+	}
+
+	sql := fmt.Sprintf(`INSERT INTO "gorjb"."PatrolUser" ("patrolId", "patrolTime", "user", "result", "detail") values('%d', '%s', '%s', '%d', '%s')`, info.PatrolId, info.PatrolTime, info.User, is, info.Detail)
+
+	exec, err := DB.Exec(sql)
+	if err != nil {
+		return -1, err
+	}
+	id, err := exec.LastInsertId()
+
+	if err != nil {
+		return -1, err
+	}
+
+	log.Printf("插入成功id=%d\n", id)
+	return int(id), nil
+}
+
+func SelectPatrolUser(page model.PageInfo) ([]model.PatrolUser, error) {
+	sql := fmt.Sprintf(`SELECT "patrolId", "patrolTime", "user", "result", "detail" FROM "gorjb"."PatrolUser"  ORDER BY 'patrolTime' OFFSET %d ROWS FETCH NEXT %d ROWS ONLY`, page.Page-1, page.PageSize)
+
+	exec, err := DB.Query(sql)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	if exec.Err() != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	var list []model.PatrolUser
+
+	for exec.Next() {
+		var info model.PatrolUser
+		err = exec.Scan(&info.PatrolId, &info.PatrolTime, &info.User, &info.Result, &info.Detail)
+
+		if err != nil {
+			log.Println(err.Error())
+			return nil, err
+		}
+		list = append(list, info)
+	}
+	return list, nil
+}
+
+func DelPatrolUser(id int) error {
+	sql := fmt.Sprintf(`DELETE FROM "gorjb"."PatrolUser" WHERE "id" = '%d'`, id)
+	_, err := DB.Exec(sql)
+	if err != nil {
+		return err
+	}
+	log.Println("删除成功")
+	return nil
 }

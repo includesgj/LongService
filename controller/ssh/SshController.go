@@ -63,6 +63,7 @@ func SshConnect(c *gin.Context) {
 	port := c.Query("port")
 	password := c.Query("password")
 	username := c.Query("username")
+	fmt.Println("host", host, "port", port, "pwd", password, "user", username)
 
 	vmInfo := model.ConnectRequest{
 		Host:     host,
@@ -106,6 +107,7 @@ func SshConnect(c *gin.Context) {
 	stdinPipe, err := session.StdinPipe()
 	if err != nil {
 		response.Response(c, http.StatusInternalServerError, 500, nil, err.Error())
+		return
 	}
 	defer stdinPipe.Close()
 

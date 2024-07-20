@@ -30,7 +30,7 @@ func Monitor(c *gin.Context) {
 		return
 	}
 
-	if err := monitorService.MonitorSwitch(req); err != nil {
+	if err := monitorService.MonitorAdd(req); err != nil {
 		response.Response(c, http.StatusInternalServerError, 500, nil, err.Error())
 		return
 	}

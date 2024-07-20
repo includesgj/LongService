@@ -7,22 +7,24 @@
     <list default="true" id="9b1174b4-61f4-479e-a4c5-cab829538dc7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/arm64" beforeDir="false" afterPath="$PROJECT_DIR$/arm64" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/files/FileController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/files/FileController.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/application.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/logs/LogController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/logs/LogController.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/monitor/MonitorController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/monitor/MonitorController.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/ssh/SshController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/ssh/SshController.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controller/system/SysController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/system/SysController.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/databases/dameng.go" beforeDir="false" afterPath="$PROJECT_DIR$/databases/dameng.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/docs.go" beforeDir="false" afterPath="$PROJECT_DIR$/docs/docs.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/swagger.json" beforeDir="false" afterPath="$PROJECT_DIR$/docs/swagger.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/swagger.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/swagger.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware/AuthMiddleware.go" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/AuthMiddleware.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/model/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/model/model.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routers.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverce/cmd/files/file.go" beforeDir="false" afterPath="$PROJECT_DIR$/serverce/cmd/files/file.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverce/cmd/files/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/serverce/cmd/files/model.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverce/cmd/system/monitor/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/serverce/cmd/system/monitor/model.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverce/cmd/system/monitor/monitor.go" beforeDir="false" afterPath="$PROJECT_DIR$/serverce/cmd/system/monitor/monitor.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverce/cmd/system/static/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/serverce/cmd/system/static/model.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverce/cmd/logs/login-log-server/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/serverce/cmd/logs/login-log-server/model.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverce/cmd/monitor/monitor.go" beforeDir="false" afterPath="$PROJECT_DIR$/serverce/cmd/monitor/monitor.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/serverce/cmd/system/static/static.go" beforeDir="false" afterPath="$PROJECT_DIR$/serverce/cmd/system/static/static.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/Eamil.go" beforeDir="false" afterPath="$PROJECT_DIR$/util/Eamil.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/ssh/ssh.go" beforeDir="false" afterPath="$PROJECT_DIR$/util/ssh/ssh.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/util.go" beforeDir="false" afterPath="$PROJECT_DIR$/util/util.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,6 +73,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/serverce/cmd/patrol" />
       <recent name="$PROJECT_DIR$/util/cmd" />
       <recent name="$PROJECT_DIR$/util" />
     </key>

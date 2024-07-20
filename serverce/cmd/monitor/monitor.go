@@ -30,14 +30,30 @@ func GetNowTime() string {
 
 var AllMonitor = make(map[int]chan bool)
 
-func (f *MonitorService) MonitorSwitch(req model.Monitor) error {
+func (f *MonitorService) MonitorAdd(req model.Monitor) error {
 	// 插入数据库
 	id, err := sdb.InsertMonitorInfo(req)
 	if err != nil {
 		return err
 	}
 	req.Id = id
+	SwitchMonitor(req)
+	return nil
+}
 
+func InitMon() {
+	list, err := sdb.SelectMonitor()
+	if err != nil {
+		log.Println(err)
+	}
+
+	for _, j := range list {
+		SwitchMonitor(j)
+	}
+
+}
+
+func SwitchMonitor(req model.Monitor) {
 	switch req.HardWare {
 	case CPU:
 		go MCpu(req)
@@ -52,7 +68,6 @@ func (f *MonitorService) MonitorSwitch(req model.Monitor) error {
 	case IO:
 		go MIo(req)
 	}
-	return nil
 }
 
 func (f *MonitorService) DelMonitor(id int) error {
@@ -85,7 +100,7 @@ func MCpu(req model.Monitor) {
 			if req.Threshold <= cpu.CpuUsedPercent {
 				emails := strings.Split(req.NotifyEmail, ",")
 				for _, email := range emails {
-					if err := util.SendEmailWarning(email, fmt.Sprintf("当前时间%s\ncpu阈值已达到%.2f您设定的是%.2f", GetNowTime(), cpu.CpuUsedPercent, req.Threshold)); err != nil {
+					if err := util.SendEmailWarning(email, fmt.Sprintf("当前时间%s\nip地址为%scpu阈值已达到%.2f您设定的是%.2f", GetNowTime(), sdb.GetLocalIPv4(), cpu.CpuUsedPercent, req.Threshold)); err != nil {
 						log.Println("发送失败")
 						continue
 					}
@@ -118,7 +133,7 @@ func MMemory(req model.Monitor) {
 			if mem.MUsedPercent >= req.Threshold {
 				emails := strings.Split(req.NotifyEmail, ",")
 				for _, email := range emails {
-					if err := util.SendEmailWarning(email, fmt.Sprintf("当前时间%s\n内存阈值已达到%.2f您设定的是%.2f", GetNowTime(), mem.MUsedPercent, req.Threshold)); err != nil {
+					if err := util.SendEmailWarning(email, fmt.Sprintf("当前时间%s\nip地址为%s内存阈值已达到%.2f您设定的是%.2f", GetNowTime(), sdb.GetLocalIPv4(), mem.MUsedPercent, req.Threshold)); err != nil {
 						log.Println("发送失败")
 						continue
 					}
@@ -155,7 +170,7 @@ func MLoad(req model.Monitor) {
 			if load.LoadUsagePercent >= req.Threshold {
 				emails := strings.Split(req.NotifyEmail, ",")
 				for _, email := range emails {
-					if err := util.SendEmailWarning(email, fmt.Sprintf("当前时间%s\n系统负载阈值已达到%.2f您设定的是%.2f", GetNowTime(), load.LoadUsagePercent, req.Threshold)); err != nil {
+					if err := util.SendEmailWarning(email, fmt.Sprintf("当前时间%s\nip地址为%s系统负载阈值已达到%.2f您设定的是%.2f", GetNowTime(), sdb.GetLocalIPv4(), load.LoadUsagePercent, req.Threshold)); err != nil {
 						log.Println("发送失败")
 						continue
 					}
@@ -189,7 +204,7 @@ func MDisk(req model.Monitor) {
 			if disk.UsedPercent >= req.Threshold {
 				emails := strings.Split(req.NotifyEmail, ",")
 				for _, email := range emails {
-					if err := util.SendEmailWarning(email, fmt.Sprintf("当前时间%s\n磁盘阈值已达到%.2f您设定的是%.2f", GetNowTime(), disk.UsedPercent, req.Threshold)); err != nil {
+					if err := util.SendEmailWarning(email, fmt.Sprintf("当前时间%s\nip地址为%s磁盘阈值已达到%.2f您设定的是%.2f", GetNowTime(), sdb.GetLocalIPv4(), disk.UsedPercent, req.Threshold)); err != nil {
 						log.Println("发送失败")
 						continue
 					}
@@ -227,7 +242,7 @@ func MNetwork(req model.Monitor) {
 		if flag && DownRes >= req.Down {
 			emails := strings.Split(req.NotifyEmail, ",")
 			for _, email := range emails {
-				if err := util.SendEmailWarning(email, fmt.Sprintf("当前时间%s\n网络下行阈值已达到%.2f 您设置的是%.2f", GetNowTime(), DownRes, req.Down)); err != nil {
+				if err := util.SendEmailWarning(email, fmt.Sprintf("当前时间%s\nip地址为%s网络下行阈值已达到%.2f 您设置的是%.2f", GetNowTime(), sdb.GetLocalIPv4(), DownRes, req.Down)); err != nil {
 					log.Println("发送失败")
 					continue
 				}
@@ -240,7 +255,7 @@ func MNetwork(req model.Monitor) {
 		if flag && UpRes >= req.Up {
 			emails := strings.Split(req.NotifyEmail, ",")
 			for _, email := range emails {
-				if err := util.SendEmailWarning(email, fmt.Sprintf("当前时间%s\n网络上行阈值已达到%.2f 您设置的是%.2f", GetNowTime(), UpRes, req.Up)); err != nil {
+				if err := util.SendEmailWarning(email, fmt.Sprintf("当前时间%s\nip地址为%s网络上行阈值已达到%.2f 您设置的是%.2f", GetNowTime(), sdb.GetLocalIPv4(), UpRes, req.Up)); err != nil {
 					log.Println("发送失败")
 					continue
 				}
@@ -280,7 +295,7 @@ func MIo(req model.Monitor) {
 		if flag && DownRes >= req.Down {
 			emails := strings.Split(req.NotifyEmail, ",")
 			for _, email := range emails {
-				if err := util.SendEmailWarning(email, fmt.Sprintf("当前时间%s\n网络下行阈值已达到%.2f 您设置的是%.2f", GetNowTime(), DownRes, req.Down)); err != nil {
+				if err := util.SendEmailWarning(email, fmt.Sprintf("当前时间%s\nip地址为%s网络下行阈值已达到%.2f 您设置的是%.2f", GetNowTime(), sdb.GetLocalIPv4(), DownRes, req.Down)); err != nil {
 					log.Println("发送失败")
 					continue
 				}
@@ -293,7 +308,7 @@ func MIo(req model.Monitor) {
 		if flag && UpRes >= req.Up {
 			emails := strings.Split(req.NotifyEmail, ",")
 			for _, email := range emails {
-				if err := util.SendEmailWarning(email, fmt.Sprintf("当前时间%s\n网络上行阈值已达到%.2f 您设置的是%.2f", GetNowTime(), UpRes, req.Up)); err != nil {
+				if err := util.SendEmailWarning(email, fmt.Sprintf("当前时间%s\nip地址为%s网络上行阈值已达到%.2f 您设置的是%.2f", GetNowTime(), sdb.GetLocalIPv4(), UpRes, req.Up)); err != nil {
 					log.Println("发送失败")
 					continue
 				}

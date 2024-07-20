@@ -75,7 +75,6 @@ func MaxUnit(bytes uint64) (float64, string) {
 }
 
 func CheckBindAndValidate(req interface{}, c *gin.Context) error {
-	fmt.Println("记得把调用过这个函数的错误处理的response删除")
 	if err := c.ShouldBindJSON(req); err != nil {
 		response.Fail(c, nil, err.Error())
 		return err

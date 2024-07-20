@@ -19,16 +19,6 @@ func (p *Cpu) GetCpuInfo() error {
 		return err
 	}
 
-	totalPercent, err := cpu.Percent(0, false)
-	if err != nil {
-		return err
-	}
-
-	if len(totalPercent) == 1 {
-		p.CpuUsedPercent = totalPercent[0]
-		p.CpuUsed = p.CpuUsedPercent * 0.01 * float64(p.NumCPU)
-	}
-
 	// cpu的使用率
 	for _, c := range cpuPercent {
 		p.Percentage = append(p.Percentage, float32(c))
@@ -57,6 +47,16 @@ func (p *Cpu) GetCpuInfo() error {
 		p.NumLogicCpu = uint(len(cpuInfo))
 		p.NumCPU++
 		p.Model = cpuInfo[0].ModelName
+	}
+
+	totalPercent, err := cpu.Percent(0, false)
+	if err != nil {
+		return err
+	}
+
+	if len(totalPercent) == 1 {
+		p.CpuUsedPercent = totalPercent[0]
+		p.CpuUsed = p.CpuUsedPercent * 0.01 * float64(p.NumCPU)
 	}
 
 	return nil

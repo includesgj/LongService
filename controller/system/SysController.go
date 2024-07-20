@@ -114,13 +114,15 @@ func SysMonitorIo(c *gin.Context) {
 	name := c.Query("name")
 	io := &condition.DiskIo{}
 
-	if name != "" {
+	if name != "all" {
 		if err := io.GetDiskIoInfoByName(name); err != nil {
 			response.Response(c, http.StatusBadRequest, 400, nil, "获取失败")
+			return
 		}
 	} else {
 		if err := io.GetDiskIoAll(); err != nil {
 			response.Response(c, http.StatusInternalServerError, 500, nil, "获取失败")
+			return
 		}
 	}
 	response.Success(c, gin.H{"data": io}, "成功")

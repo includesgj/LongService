@@ -18,8 +18,8 @@ type Admin struct {
 }
 
 type PageInfo struct {
-	Page     int `json:"page" validate:"required"`
-	PageSize int `json:"pageSize" validate:"required"`
+	Page     int `json:"page"`
+	PageSize int `json:"pageSize"`
 }
 
 // RecycleBin 回收站
@@ -59,4 +59,20 @@ type Monitor struct {
 	Up          float64   `json:"up"`
 	Down        float64   `json:"down"`
 	NotifyEmail string    `json:"notifyEmail"`
+}
+
+// id createTime 创建时间  TargetDetail 设置巡查内容 createUser 谁创建的
+type Patrol struct {
+	Id           int       `json:"id"`
+	CreateTime   time.Time `json:"createTime"`
+	TargetDetail string    `json:"detail"`
+	CreateUser   string    `json:"createUser"`
+}
+
+type PatrolUser struct {
+	PatrolId   int       `json:"patrolId"`
+	PatrolTime time.Time `json:"patrolTime"`
+	User       string    `json:"patrolUser"`
+	Result     bool      `json:"result"`
+	Detail     string    `json:"detail"`
 }

@@ -27,8 +27,10 @@ type PageInfo struct {
 
 type SearchSSHLog struct {
 	PageInfo
-	Info   string `json:"info"`
-	Status string `json:"Status" validate:"required,oneof=Success Failed All"`
+
+	Info string `json:"info"`
+	//登陆状态
+	Status string `json:"Status"`
 }
 type SSHLog struct {
 	Logs            []SSHHistory `json:"logs"`

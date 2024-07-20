@@ -704,6 +704,48 @@ const docTemplate = `{
         },
         "/logs/login": {
             "post": {
+                "description": "服务器登陆日志",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "logs"
+                ],
+                "summary": "服务器登陆日志",
+                "parameters": [
+                    {
+                        "description": "status Success 或 Failed 或 不写 不写代表全部",
+                        "name": "loginLog",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/login_log_server.SearchSSHLog"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/login_log_server.SSHLog"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/logs/panel": {
+            "post": {
                 "description": "面板登陆日志",
                 "consumes": [
                     "application/json"
@@ -833,6 +875,236 @@ const docTemplate = `{
                     "monitor"
                 ],
                 "summary": "查询监控系统信息",
+                "parameters": [
+                    {
+                        "description": "分页",
+                        "name": "page",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/model.PageInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/monitor/user/del": {
+            "get": {
+                "description": "按照id删除完成的任务",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "patrol"
+                ],
+                "summary": "按照id删除完成的任务",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "后端传的id",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/patrol/add": {
+            "post": {
+                "description": "添加任务信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "patrol"
+                ],
+                "summary": "添加任务信息",
+                "parameters": [
+                    {
+                        "description": "需要预留几个空让普通用户填的具体看model.PatrolUser时间不需要传",
+                        "name": "req",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/model.Patrol"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/patrol/del": {
+            "get": {
+                "description": "按照id删除任务",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "patrol"
+                ],
+                "summary": "按照id删除任务",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "后端传的id",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/patrol/sel": {
+            "post": {
+                "description": "查询任务信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "patrol"
+                ],
+                "summary": "查询任务信息",
+                "parameters": [
+                    {
+                        "description": "分页",
+                        "name": "page",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/model.PageInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/patrol/user/add": {
+            "post": {
+                "description": "添加完成任务信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "patrol"
+                ],
+                "summary": "添加完成任务信息",
+                "parameters": [
+                    {
+                        "description": "时间不需要传",
+                        "name": "req",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/model.PatrolUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/patrol/user/sel": {
+            "post": {
+                "description": "查询完成的任务信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "patrol"
+                ],
+                "summary": "查询完成的任务信息",
                 "parameters": [
                     {
                         "description": "分页",
@@ -1512,18 +1784,13 @@ const docTemplate = `{
         "login_log_server.SearchSSHLog": {
             "type": "object",
             "required": [
-                "Status",
                 "page",
                 "pageSize"
             ],
             "properties": {
                 "Status": {
-                    "type": "string",
-                    "enum": [
-                        "Success",
-                        "Failed",
-                        "All"
-                    ]
+                    "description": "登陆状态",
+                    "type": "string"
                 },
                 "info": {
                     "type": "string"
@@ -1591,16 +1858,49 @@ const docTemplate = `{
         },
         "model.PageInfo": {
             "type": "object",
-            "required": [
-                "page",
-                "pageSize"
-            ],
             "properties": {
                 "page": {
                     "type": "integer"
                 },
                 "pageSize": {
                     "type": "integer"
+                }
+            }
+        },
+        "model.Patrol": {
+            "type": "object",
+            "properties": {
+                "createTime": {
+                    "type": "string"
+                },
+                "createUser": {
+                    "type": "string"
+                },
+                "detail": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.PatrolUser": {
+            "type": "object",
+            "properties": {
+                "detail": {
+                    "type": "string"
+                },
+                "patrolId": {
+                    "type": "integer"
+                },
+                "patrolTime": {
+                    "type": "string"
+                },
+                "patrolUser": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "boolean"
                 }
             }
         },

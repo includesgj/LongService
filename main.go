@@ -2,6 +2,7 @@ package main
 
 import (
 	sdb "GinProject12/databases"
+	"GinProject12/serverce/cmd/monitor"
 	utssh "GinProject12/util/ssh"
 	"github.com/gin-gonic/gin"
 )
@@ -18,7 +19,7 @@ import (
 //	@license.name	Apache 2.0
 //	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
 
-//	@host		39.99.139.249:8080
+//	@host		127.0.0.1:8080
 
 //	@securityDefinitions.basic	BasicAuth
 
@@ -28,12 +29,9 @@ func main() {
 	sdb.GetDm()
 	defer sdb.CloseDm()
 	go utssh.Heartbeat()
+	go monitor.InitMon()
 
 	r := gin.Default()
 	r = CollectRoute(r)
 	panic(r.Run())
 }
-
-// put /Users/songguanju/RearEndCode/GolandProjects/GinProject12/hello
-
-// put /Users/songguanju/RearEndCode/GolandProjects

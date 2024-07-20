@@ -16,7 +16,7 @@ import (
 // @Tags         logs
 // @Accept       json
 // @Produce      json
-// @Param        loginLog body login_log.SearchSSHLog ture "request"
+// @Param        loginLog body login_log.SearchSSHLog ture "status Success 或 Failed 或 不写 不写代表全部"
 // @Success      200  {object}  login_log.SSHLog
 // @Failure      400
 // @Failure      404
@@ -53,7 +53,7 @@ func LoginLog(c *gin.Context) {
 // @Failure      400
 // @Failure      404
 // @Failure      500
-// @Router       /logs/login [POST]
+// @Router       /logs/panel [POST]
 func PanelLogin(c *gin.Context) {
 	var req model.PageInfo
 	if err := util.CheckBindAndValidate(&req, c); err != nil {

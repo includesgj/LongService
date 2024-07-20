@@ -17,6 +17,7 @@ func Heartbeat() {
 			// 心跳检测已经10秒没有给我发过心跳消息了
 			if int(up.Sub(time.Now()).Seconds()) <= -10 {
 				// 连接超时
+
 				ws.Close()
 				delete(model.ConnHeartBeat, ws)
 			}
@@ -26,7 +27,10 @@ func Heartbeat() {
 }
 
 func VerifyConnect(vmInfo *model.ConnectRequest) (bool, string) {
-	sshClient, _ := CreateSSHClient(vmInfo, ssh.Password(vmInfo.Password))
+	sshClient, err := CreateSSHClient(vmInfo, ssh.Password(vmInfo.Password))
+	if err != nil {
+		return false, ""
+	}
 	defer sshClient.Close()
 	if tempSession, err := sshClient.NewSession(); err == nil {
 		defer tempSession.Close()
@@ -70,7 +74,7 @@ func CreateSSHClient(vmInfo *model.ConnectRequest, auth ssh.AuthMethod) (*ssh.Cl
 
 	client, err := ssh.Dial("tcp", net.JoinHostPort(vmInfo.Host, vmInfo.Port), config)
 	if err != nil {
-		log.Fatalf("001.创建SSHClient失败！ %s", err)
+		log.Println(err, net.JoinHostPort(vmInfo.Host, vmInfo.Port))
 		return nil, err
 	}
 	log.Println("成功创建ssh.client")
